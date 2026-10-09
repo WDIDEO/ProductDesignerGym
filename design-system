@@ -1,0 +1,715 @@
+<!doctype html>
+<html lang="en" data-theme="dark"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Product Designer Gym — Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400..700&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8F%8B%EF%B8%8F%3C/text%3E%3C/svg%3E">
+<!-- The system itself: the same two files every prototype links -->
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components/bundle.css">
+<style>
+/* Showcase page layout only. Tokens and components load from tokens.css and components/bundle.css. */
+*{box-sizing:border-box}
+html{background:var(--background);scroll-behavior:smooth}
+body{margin:0;background:var(--background);color:var(--text);font-family:var(--font-sans);font-size:16px;line-height:24px}
+a{color:var(--primary)} a:hover{color:var(--primary-hover)}
+a:focus-visible{outline:var(--focus-ring-width) solid var(--primary);outline-offset:2px;border-radius:var(--radius-1)}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;background:var(--surface);border:var(--border-width) solid var(--border);border-radius:var(--radius-1);padding:0 var(--space-1);color:var(--text);overflow-wrap:anywhere}
+.muted{color:var(--text-muted)}
+.layout{display:grid;grid-template-columns:200px minmax(0,1fr);max-width:1240px;margin:0 auto}
+nav.side{position:sticky;top:0;align-self:start;height:100vh;padding:var(--space-7) var(--space-5);display:flex;flex-direction:column;gap:var(--space-1);border-right:var(--border-width) solid var(--border)}
+nav.side .brand{font-weight:700;margin-bottom:var(--space-5)}
+nav.side a{color:var(--text-muted);text-decoration:none;padding:var(--space-1) var(--space-2);border-radius:var(--radius-1)}
+nav.side a:hover{color:var(--text);background:var(--surface)}
+main{padding:var(--space-7) var(--space-7) 96px;min-width:0}
+section{padding-top:var(--space-7);scroll-margin-top:var(--space-4)}
+section>h2{margin:0 0 var(--space-2)}
+section>.lede{margin:0 0 var(--space-5);color:var(--text-muted);max-width:640px}
+.sub{margin:var(--space-6) 0 var(--space-3)}
+.tok{font-weight:600}
+.cover-wrap{border-radius:var(--radius-4);overflow:hidden;border:var(--border-width) solid var(--border);position:relative}
+.cover-wrap .cover{transform-origin:0 0}
+.brandbook{max-width:720px}
+.brandbook h2{font-size:24px;line-height:32px;font-weight:600;margin:var(--space-6) 0 var(--space-3)}
+.brandbook ul{padding-left:var(--space-5);margin:0} .brandbook li{margin-bottom:var(--space-2)}
+.brandbook p{margin:0 0 var(--space-3)}
+.swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:var(--space-4)}
+.swatch{background:var(--surface);border:var(--border-width) solid var(--border);border-radius:var(--radius-3);overflow:hidden}
+.chip{height:88px;border-bottom:var(--border-width) solid var(--border)}
+.sw-meta{padding:var(--space-4)} .sw-head{display:flex;justify-content:space-between;gap:var(--space-2);flex-wrap:wrap}
+.sw-name{font-weight:600} .sw-val{color:var(--text-muted);font-family:ui-monospace,Menlo,monospace;font-size:13px}
+.sw-usage{margin:var(--space-2) 0;color:var(--text-muted)} .sw-ratio{margin:0;color:var(--text-muted)}
+.type-row{display:grid;grid-template-columns:160px minmax(0,1fr);gap:var(--space-5);padding:var(--space-4) 0;border-top:var(--border-width) solid var(--border)}
+.type-spec{display:flex;flex-direction:column} .type-sample{margin:0 0 var(--space-1);color:var(--text)} .type-row .caption{margin:0}
+.scale-row{display:grid;grid-template-columns:96px 56px 56px minmax(0,1fr);align-items:center;gap:var(--space-4);padding:var(--space-3) 0;border-top:var(--border-width) solid var(--border)}
+.bar{height:16px;background:var(--primary);border-radius:2px} .scale-row .u{margin:0}
+.rads{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:var(--space-4)}
+.rad{display:flex;flex-direction:column;gap:var(--space-1)} .rad p{margin:var(--space-1) 0 0}
+.rad-box{width:96px;height:96px;background:var(--surface);border:var(--border-width) solid var(--primary);margin-bottom:var(--space-2)}
+.bws{display:grid;gap:var(--space-5)} .bw{display:flex;gap:var(--space-5);align-items:center} .bw p{margin:var(--space-1) 0 0}
+.bw-demo{flex:none;width:72px;height:56px;display:grid;place-items:center;background:var(--surface);border-radius:var(--radius-2);font-weight:600}
+.comp{margin-bottom:var(--space-7)} .comp h3{margin:0 0 var(--space-3)}
+.stage{background:var(--background);border:var(--border-width) solid var(--border);border-radius:var(--radius-3);background-image:radial-gradient(var(--surface) 1px,transparent 1px);background-size:16px 16px}
+.guide{max-width:720px;margin-top:var(--space-4)} .guide p{margin:0 0 var(--space-3)} .guide ul{padding-left:var(--space-5)} .guide li{margin-bottom:var(--space-1)}
+.logo-row{display:grid;grid-template-columns:minmax(0,360px) minmax(0,1fr);gap:var(--space-6);align-items:start}
+.logo-row img{width:100%;height:auto;display:block;border-radius:var(--radius-4);border:var(--border-width) solid var(--border)}
+footer{margin-top:var(--space-7);padding-top:var(--space-5);border-top:var(--border-width) solid var(--border)}
+@media (max-width:860px){
+ .layout{grid-template-columns:minmax(0,1fr)}
+ nav.side{min-width:0}
+ nav.side{position:sticky;top:0;z-index:5;height:auto;flex-direction:row;overflow-x:auto;padding:var(--space-3) var(--space-4);border-right:0;border-bottom:var(--border-width) solid var(--border);background:var(--background);white-space:nowrap}
+ nav.side .brand{display:none}
+ main{padding:var(--space-5) var(--space-4) var(--space-7)}
+ .type-row{grid-template-columns:1fr;gap:var(--space-2)}
+ .scale-row{grid-template-columns:80px 48px minmax(0,1fr)} .scale-row .u{grid-column:1/-1}
+ .logo-row{grid-template-columns:1fr}
+ .h1.type-sample{font-size:32px;line-height:40px}
+}
+</style></head><body>
+<div class="layout">
+<nav class="side" aria-label="Sections"><span class="brand">Product Designer Gym</span><a href="#overview">Overview</a><a href="#colour">Colour</a><a href="#type">Typography</a><a href="#spacing">Spacing</a><a href="#radius">Radius</a><a href="#borders">Border width</a><a href="#components">Components</a><a href="#logo">Logo</a></nav>
+<main>
+<section id="overview" style="padding-top:0">
+<div class="cover-wrap" id="coverWrap"><style>
+  .cover { position: relative; width: 960px; height: 288px; background: var(--background); overflow: hidden; }
+  .cover svg { position: absolute; left: 0; top: 0; }
+  .b-primary { fill: var(--primary); rx: var(--radius-4); }
+  .b-muted { fill: var(--text-muted); rx: var(--radius-5); }
+  .b-border { fill: var(--border); rx: var(--radius-3); }
+  .b-warning { fill: var(--warning); rx: var(--radius-3); }
+  .frame { fill: none; stroke: var(--text); stroke-width: 1.5px; }
+  .handle { fill: var(--background); stroke: var(--text); stroke-width: 1.5px; rx: var(--radius-1); }
+  .name { position: absolute; left: 32px; top: 152px; margin: 0; font: 700 64px/0.95 var(--font-sans); color: var(--text); letter-spacing: -0.01em; white-space: nowrap; }
+  .tag { position: absolute; left: 32px; top: 236px; margin: 0; max-width: 440px; font: 400 14px/20px var(--font-sans); color: var(--text-muted); }
+</style>
+<div class="cover">
+  <svg width="960" height="120" viewBox="0 0 960 120" aria-hidden="true">
+    <!--
+      blocks: primary 432×88 (radius-4) · text-muted 192×88 (radius-5) · border 144×104 (radius-3) · warning 128×48 (radius-3); sides are spacing multiples (space-7 / space-4 / space-2)
+      arrangement: top-band skeleton (name is 20 letters, too wide for the 440px zone); neutral slabs bleed off the top and right, the primary block sits free inside a selection frame
+      pattern: literal motif — the logo's design-tool selection frame with square corner handles ("a training floor for design skills"), one frame + four handles, hairline in `text`
+      scales: gaps space-4 (16), frame offset space-2 (8), handles space-3 (12) at radius-1, inset space-6 (32)
+    -->
+    <rect class="b-border" x="32" y="-24" width="144" height="104"/>
+    <rect class="b-primary" x="192" y="16" width="432" height="88"/>
+    <rect class="frame" x="184" y="8" width="448" height="104"/>
+    <rect class="handle" x="178" y="2" width="12" height="12"/>
+    <rect class="handle" x="626" y="2" width="12" height="12"/>
+    <rect class="handle" x="178" y="106" width="12" height="12"/>
+    <rect class="handle" x="626" y="106" width="12" height="12"/>
+    <rect class="b-muted" x="656" y="-24" width="192" height="88"/>
+    <rect class="b-warning" x="864" y="-16" width="128" height="48"/>
+  </svg>
+  <h1 class="name">Product Designer Gym</h1>
+  <p class="tag">A dark, neon-lit system for interfaces that train design skills.</p>
+</div></div>
+<div class="use body" style="margin-top:var(--space-6);max-width:720px">
+<h2 class="h3" style="margin:0 0 var(--space-2)">Use it in your prototype</h2>
+<p class="muted" style="margin:0 0 var(--space-3)">Paste these lines into the <code>&lt;head&gt;</code> of your HTML file, tokens first. Then use the classes on this page, adding a type class to each component, e.g. <code>&lt;button class="body pdg-btn pdg-btn--primary"&gt;Start workout&lt;/button&gt;</code>.</p>
+<pre style="margin:0;padding:var(--space-4);background:var(--surface);border:var(--border-width) solid var(--border);border-radius:var(--radius-3);overflow-x:auto;font:13px/20px ui-monospace,Menlo,monospace;color:var(--text)">&lt;link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400..700&amp;display=swap"&gt;
+&lt;link rel="stylesheet" href="https://phoebeyudesign.github.io/ProductDesignerGym/tokens.css"&gt;
+&lt;link rel="stylesheet" href="https://phoebeyudesign.github.io/ProductDesignerGym/components/bundle.css"&gt;</pre>
+</div>
+<div class="brandbook body" style="margin-top:var(--space-6)"><p>A dark, neon-lit system for Product Designer Gym: interfaces that feel like a training floor for design skills — a dark canvas, one electric-blue action colour, and plain, confident DM Sans type.</p>
+<h2>Brand</h2>
+<ul>
+<li>Write the name as <strong>Product Designer Gym</strong> — three words, title case, never abbreviated in UI copy.</li>
+<li>The logo is a photographed neon sign: a flexed-arm icon inside a design-tool selection frame (corner handles), a sparkle and a cursor, over the stacked wordmark. Use <code>product-designer-gym-neon.png</code> from <strong>Logos</strong> as a hero or brand image on <code>background</code>; it carries its own brick-wall backdrop, so never place it on a light ground or crop the sign's glow tightly.</li>
+<li>The sign's violet sparkle, pink frame and orange cursor belong to the logo image only. They are <strong>not</strong> UI colours: interfaces use the tokens below.</li>
+<li>No vector mark has been supplied, so there is no small-size logo or favicon yet. Do not redraw the sign; set the name in <code>h4</code> / <code>text</code> where a compact mark is needed.</li>
+</ul>
+<h2>Colour</h2>
+<p>The system has one theme, <strong>Dark</strong>.</p>
+<ul>
+<li>Paint the app canvas <code>background</code>; cards, modals and input fields <code>surface</code>.</li>
+<li>Set headings and body copy in <code>text</code>; secondary text, hints and descriptions in <code>text-muted</code>.</li>
+<li>Use <code>primary</code> for primary actions, links and active elements, and <code>primary-hover</code> only for their hover state — it is not a second brand colour.</li>
+<li>Label any <code>primary</code>, <code>primary-hover</code> or <code>error</code> fill with <code>on-primary</code> (the dark canvas colour). White on <code>primary</code> is 1.9:1 and fails.</li>
+<li>Use <code>success</code> for successful outcomes, <code>warning</code> for caution and <code>error</code> for errors or destructive actions. Never signal status through colour alone: pair it with an icon and a word (see <strong>StatusBadge</strong>).</li>
+<li>Use <code>border</code> for dividers, outlines and input borders. It measures 2.6:1 on <code>background</code> and 2.3:1 on <code>surface</code>, under the 3:1 recommended for control boundaries — rely on the field's <code>surface</code> fill and its label as well as the outline, and use the <code>primary</code> focus ring to mark the active field.</li>
+<li>Check contrast for each actual pairing; target WCAG AA — 4.5:1 for normal text, 3:1 for large text and for meaningful graphics and control boundaries.</li>
+</ul>
+<h2>Typography</h2>
+<ul>
+<li>Set everything in DM Sans (<code>--font-sans</code>). It is a hosted Google Font: load it in the project before applying these tokens, e.g. <code>https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400..700&amp;display=swap</code>.</li>
+<li>Headings: <code>h1</code> 40/48 bold for page titles (one per page; about 32px on small screens), <code>h2</code> 32/40 bold for sections, <code>h3</code> 24/32 semibold for subsections, <code>h4</code> 20/28 semibold for card and component titles. Keep them in descending order.</li>
+<li>Text: <code>body</code> 16/24 for primary content, <code>caption</code> 14/20 for supporting information, <code>small</code> 12/16 for secondary labels and timestamps.</li>
+<li>Reserve <code>tiny</code> (10/12, medium) for nonessential decorative metadata; keep anything essential at 12px or larger.</li>
+<li>Apply type through the type-style classes (<code>class="body"</code>, <code>caption</code>, <code>h4</code>, <code>small</code>…), never by hard-coding a font size. Components set only a weight on top of them (labels and badges at 600).</li>
+</ul>
+<h2>Spacing and layout</h2>
+<ul>
+<li>Use only the spacing scale <code>space-1</code> (4px) to <code>space-7</code> (48px) — no arbitrary numbers.</li>
+<li>Default gaps are <code>space-4</code> (16px), card padding is <code>space-5</code> (24px), and major sections sit <code>space-7</code> (48px) apart. Inputs pad at <code>space-3</code>.</li>
+</ul>
+<h2>Radii</h2>
+<ul>
+<li>Buttons and inputs <code>radius-2</code> (8px); cards and dropdowns <code>radius-3</code> (12px); larger panels <code>radius-4</code> (16px); badges and small controls <code>radius-1</code> (4px).</li>
+<li>Use <code>radius-none</code> (0) for full-bleed images and tables that run edge to edge, and <code>radius-full</code> (9999px) for pills and circles.</li>
+<li>Keep radii consistent between related components. Use <code>radius-5</code> and <code>radius-full</code> selectively, for hero, feature and pill shapes.</li>
+</ul>
+<h2>Borders</h2>
+<ul>
+<li>Draw every outline and divider at <code>border-width</code> (1px) and every focus outline at <code>focus-ring-width</code> (2px) — never a literal pixel width.</li>
+</ul>
+<h2>Interaction</h2>
+<ul>
+<li>One visually dominant primary button per screen or task area; everything else is secondary or ghost.</li>
+<li>Every interactive element shows a visible keyboard focus state: a solid <code>focus-ring-width</code> <code>primary</code> ring with a 2px offset (8.8:1 on <code>background</code>, 7.8:1 on <code>surface</code>).</li>
+<li>Destructive actions use <code>error</code> and say what they destroy ("Delete workout").</li>
+</ul>
+<h2>Iconography</h2>
+<p>No icon set has been supplied. The logo's motifs — the selection frame with corner handles, the sparkle and the cursor — are the brand's visual language; when an icon set is chosen, prefer a single-weight outline style that matches the neon tubing, and always pair status icons with a word.</p>
+<h2>Components</h2>
+<p>The component styles live in <code>components/bundle.css</code> as plain CSS classes (prefix <code>pdg-</code>); there is no JavaScript bundle. The spec names actions, inputs, cards and status colours, so the system includes <strong>Button</strong>, <strong>Input</strong>, <strong>Card</strong> and <strong>StatusBadge</strong> built strictly from these tokens.</p></div>
+</section>
+<section id="colour"><h2 class="h2">Colour</h2><p class="lede">One dark theme. Contrast ratios are measured against <code>background</code> and <code>surface</code>.</p><div class="swatches"><article class="swatch"><div class="chip" style="background:var(--primary)"></div>
+<div class="sw-meta"><div class="sw-head"><span class="sw-name">primary</span><span class="sw-val">#00BFFF</span></div>
+<p class="sw-usage caption">Primary actions, links and active elements. As text: 8.8:1 on <code>background</code>, 7.8:1 on <code>surface</code>. As a fill, label it with <code>on-primary</code>, never white (white on primary is 1.9:1). Also the keyboard focus ring.</p>
+<p class="sw-ratio small">8.8:1 on background · 7.8:1 on surface</p></div></article><article class="swatch"><div class="chip" style="background:var(--primary-hover)"></div>
+<div class="sw-meta"><div class="sw-head"><span class="sw-name">primary-hover</span><span class="sw-val">#33CCFF</span></div>
+<p class="sw-usage caption">Hover state of anything painted in <code>primary</code> — never a second primary colour.</p>
+<p class="sw-ratio small">9.9:1 on background · 8.8:1 on surface</p></div></article><article class="swatch"><div class="chip" style="background:var(--on-primary)"></div>
+<div class="sw-meta"><div class="sw-head"><span class="sw-name">on-primary</span><span class="sw-val">#111318 · {background}</span></div>
+<p class="sw-usage caption">Labels and icons on <code>primary</code> / <code>primary-hover</code> fills (8.8:1 / 9.9:1). Added alongside the spec: the spec gives no text colour for primary fills.</p>
+<p class="sw-ratio small">1.0:1 on background · 1.1:1 on surface</p></div></article><article class="swatch"><div class="chip" style="background:var(--background)"></div>
+<div class="sw-meta"><div class="sw-head"><span class="sw-name">background</span><span class="sw-val">#111318</span></div>
+<p class="sw-usage caption">The main app canvas.</p>
+<p class="sw-ratio small">1.0:1 on background · 1.1:1 on surface</p></div></article><article class="swatch"><div class="chip" style="background:var(--surface)"></div>
+<div class="sw-meta"><div class="sw-head"><span class="sw-name">surface</span><span class="sw-val">#1B1F2A</span></div>
+<p class="sw-usage caption">Cards, modals and input backgrounds, on top of <code>background</code>.</p>
+<p class="sw-ratio small">1.1:1 on background · 1.0:1 on surface</p></div></article><article class="swatch"><div class="chip" style="background:var(--text)"></div>
+<div class="sw-meta"><div class="sw-head"><span class="sw-name">text</span><span class="sw-val">#F5F5F5</span></div>
+<p class="sw-usage caption">Headings and primary body text on <code>background</code> (17:1) and <code>surface</code> (15.1:1).</p>
+<p class="sw-ratio small">17.0:1 on background · 15.1:1 on surface</p></div></article><article class="swatch"><div class="chip" style="background:var(--text-muted)"></div>
+<div class="sw-meta"><div class="sw-head"><span class="sw-name">text-muted</span><span class="sw-val">#C4CAD4</span></div>
+<p class="sw-usage caption">Secondary text, hints and descriptions on <code>background</code> (11.3:1) and <code>surface</code> (10:1).</p>
+<p class="sw-ratio small">11.3:1 on background · 10.0:1 on surface</p></div></article><article class="swatch"><div class="chip" style="background:var(--border)"></div>
+<div class="sw-meta"><div class="sw-head"><span class="sw-name">border</span><span class="sw-val">#515867</span></div>
+<p class="sw-usage caption">Dividers, outlines and input borders. Contrast flag: 2.6:1 on <code>background</code>, 2.3:1 on <code>surface</code> — below the 3:1 the spec asks of control boundaries, so fine for decorative dividers; an input relying on this outline alone to be found does not meet it.</p>
+<p class="sw-ratio small">2.6:1 on background · 2.3:1 on surface</p></div></article><article class="swatch"><div class="chip" style="background:var(--success)"></div>
+<div class="sw-meta"><div class="sw-head"><span class="sw-name">success</span><span class="sw-val">#00E676</span></div>
+<p class="sw-usage caption">Successful outcomes. Always paired with an icon or word. As text: 11.1:1 on <code>background</code>, 9.9:1 on <code>surface</code>.</p>
+<p class="sw-ratio small">11.1:1 on background · 9.9:1 on surface</p></div></article><article class="swatch"><div class="chip" style="background:var(--warning)"></div>
+<div class="sw-meta"><div class="sw-head"><span class="sw-name">warning</span><span class="sw-val">#FFD166</span></div>
+<p class="sw-usage caption">Caution. Always paired with an icon or word. As text: 12.9:1 on <code>background</code>, 11.4:1 on <code>surface</code>.</p>
+<p class="sw-ratio small">12.9:1 on background · 11.4:1 on surface</p></div></article><article class="swatch"><div class="chip" style="background:var(--error)"></div>
+<div class="sw-meta"><div class="sw-head"><span class="sw-name">error</span><span class="sw-val">#FF6B6B</span></div>
+<p class="sw-usage caption">Errors and destructive actions. Always paired with an icon or word. As text: 6.7:1 on <code>background</code>, 5.9:1 on <code>surface</code>; as a fill, label it with <code>on-primary</code> (6.7:1).</p>
+<p class="sw-ratio small">6.7:1 on background · 5.9:1 on surface</p></div></article></div></section>
+<section id="type"><h2 class="h2">Typography</h2><p class="lede">DM Sans throughout. Apply each style with its class, e.g. <code>class="body"</code>.</p><h3 class="h4 sub">Headings</h3><div class="type-row"><div class="type-spec"><span class="tok">h1</span><span class="small muted">40px / 48px · 700</span></div>
+<div><p class="h1 type-sample">Train your design muscles</p><p class="caption muted">Page titles and hero headings. One per page; around 32px on small screens.</p></div></div><div class="type-row"><div class="type-spec"><span class="tok">h2</span><span class="small muted">32px / 40px · 700</span></div>
+<div><p class="h2 type-sample">This week&#x27;s workouts</p><p class="caption muted">Main section headings.</p></div></div><div class="type-row"><div class="type-spec"><span class="tok">h3</span><span class="small muted">24px / 32px · 600</span></div>
+<div><p class="h3 type-sample">Critique drills</p><p class="caption muted">Subsection headings.</p></div></div><div class="type-row"><div class="type-spec"><span class="tok">h4</span><span class="small muted">20px / 28px · 600</span></div>
+<div><p class="h4 type-sample">Redesign a checkout flow</p><p class="caption muted">Card and component titles.</p></div></div><h3 class="h4 sub">Text</h3><div class="type-row"><div class="type-spec"><span class="tok">body</span><span class="small muted">16px / 24px · 400</span></div>
+<div><p class="body type-sample">Pick a challenge, set a timer and ship a solution before it runs out.</p><p class="caption muted">Default paragraphs and interface text.</p></div></div><div class="type-row"><div class="type-spec"><span class="tok">caption</span><span class="small muted">14px / 20px · 400</span></div>
+<div><p class="caption type-sample">Due in 2 days · 45 min session</p><p class="caption muted">Helper text and metadata.</p></div></div><div class="type-row"><div class="type-spec"><span class="tok">small</span><span class="small muted">12px / 16px · 400</span></div>
+<div><p class="small type-sample">Updated 09 Oct 2026, 21:05</p><p class="caption muted">Secondary labels and timestamps. The smallest size for essential information.</p></div></div><div class="type-row"><div class="type-spec"><span class="tok">tiny</span><span class="small muted">10px / 12px · 500</span></div>
+<div><p class="tiny type-sample">v1.0 · NEON</p><p class="caption muted">Compact, nonessential decorative metadata only.</p></div></div></section>
+<section id="spacing"><h2 class="h2">Spacing</h2><p class="lede">Use only these steps — 16px for standard gaps, 24px card padding, 48px between major sections.</p><div class="scale-row"><span class="tok">space-1</span><span class="small muted v">4px</span><span class="bar" style="width:var(--space-1)"></span><span class="caption muted u">Icon gaps and micro adjustments.</span></div><div class="scale-row"><span class="tok">space-2</span><span class="small muted v">8px</span><span class="bar" style="width:var(--space-2)"></span><span class="caption muted u">Compact element spacing.</span></div><div class="scale-row"><span class="tok">space-3</span><span class="small muted v">12px</span><span class="bar" style="width:var(--space-3)"></span><span class="caption muted u">Input padding and small card gaps.</span></div><div class="scale-row"><span class="tok">space-4</span><span class="small muted v">16px</span><span class="bar" style="width:var(--space-4)"></span><span class="caption muted u">Standard padding and content gaps — the default gap.</span></div><div class="scale-row"><span class="tok">space-5</span><span class="small muted v">24px</span><span class="bar" style="width:var(--space-5)"></span><span class="caption muted u">Card padding and section spacing.</span></div><div class="scale-row"><span class="tok">space-6</span><span class="small muted v">32px</span><span class="bar" style="width:var(--space-6)"></span><span class="caption muted u">Large component gaps.</span></div><div class="scale-row"><span class="tok">space-7</span><span class="small muted v">48px</span><span class="bar" style="width:var(--space-7)"></span><span class="caption muted u">Major section separation and page layout.</span></div></section>
+<section id="radius"><h2 class="h2">Radius</h2><p class="lede">8px for buttons and inputs, 12px for cards, 16px for larger panels.</p><div class="rads"><div class="rad"><div class="rad-box" style="border-radius:var(--radius-none)"></div><span class="tok">radius-none</span><span class="small muted">0</span><p class="caption muted">Square corners for full-bleed images and tables that run edge to edge.</p></div><div class="rad"><div class="rad-box" style="border-radius:var(--radius-1)"></div><span class="tok">radius-1</span><span class="small muted">4px</span><p class="caption muted">Small controls and badges.</p></div><div class="rad"><div class="rad-box" style="border-radius:var(--radius-2)"></div><span class="tok">radius-2</span><span class="small muted">8px</span><p class="caption muted">Inputs and buttons.</p></div><div class="rad"><div class="rad-box" style="border-radius:var(--radius-3)"></div><span class="tok">radius-3</span><span class="small muted">12px</span><p class="caption muted">Cards and dropdowns.</p></div><div class="rad"><div class="rad-box" style="border-radius:var(--radius-4)"></div><span class="tok">radius-4</span><span class="small muted">16px</span><p class="caption muted">Large cards and panels.</p></div><div class="rad"><div class="rad-box" style="border-radius:var(--radius-5)"></div><span class="tok">radius-5</span><span class="small muted">24px</span><p class="caption muted">Feature panels and hero containers. Use selectively.</p></div><div class="rad"><div class="rad-box" style="border-radius:var(--radius-full)"></div><span class="tok">radius-full</span><span class="small muted">9999px</span><p class="caption muted">Fully rounded pills and circles — avatars, toggles, pill tags. Use selectively.</p></div></div></section>
+<section id="borders"><h2 class="h2">Border width</h2><p class="lede">Named widths for outlines and focus rings.</p><div class="bws"><div class="bw"><div class="bw-demo" style="border:var(--border-width) solid var(--text-muted)">Aa</div><div><span class="tok">border-width</span> <span class="small muted">1px</span><p class="caption muted">Every component outline and divider: buttons, inputs, cards, badges.</p></div></div><div class="bw"><div class="bw-demo" style="outline:var(--focus-ring-width) solid var(--primary);outline-offset:2px;border:var(--border-width) solid var(--border)">Aa</div><div><span class="tok">focus-ring-width</span> <span class="small muted">2px</span><p class="caption muted">Keyboard focus outline on every interactive element, drawn in <code>primary</code> with a 2px offset.</p></div></div></div></section>
+<section id="components"><h2 class="h2">Components</h2><p class="lede">Plain CSS classes prefixed <code>pdg-</code>, styled entirely from tokens.</p><article class="comp" id="c-button"><h3 class="h3">Button</h3><div class="stage"><div class="pdg-stack">
+  <button class="body pdg-btn pdg-btn--primary">Start workout</button>
+  <button class="body pdg-btn pdg-btn--secondary">Preview brief</button>
+  <button class="body pdg-btn pdg-btn--ghost">Skip for now</button>
+  <button class="body pdg-btn pdg-btn--destructive">Delete workout</button>
+  <button class="body pdg-btn" disabled>Submitted</button>
+</div></div><div class="guide body"><p>Triggers an action; one visually dominant primary button per screen or task area.</p>
+<p><strong>Markup:</strong> <code>&lt;button class="body pdg-btn pdg-btn--primary"&gt;Start workout&lt;/button&gt;</code> — the <code>body</code> type style sets the label size; the button adds weight 600. Variants: <code>--primary</code>, <code>--secondary</code>, <code>--ghost</code>, <code>--destructive</code>. Disable with <code>disabled</code> (or <code>aria-disabled="true"</code> on a link).</p>
+<p><strong>You provide:</strong> the label (a verb first: "Start workout", "Submit critique"), an optional leading icon with <code>aria-hidden="true"</code>, and the click handler.</p>
+<ul>
+<li>Primary: <code>primary</code> fill, <code>on-primary</code> label, <code>primary-hover</code> on hover. Never white text on <code>primary</code>.</li>
+<li>Secondary: transparent with a <code>text-muted</code> outline (11.3:1) — used for everything that is not the main action.</li>
+<li>Ghost: <code>primary</code> text for low-emphasis actions inside cards and toolbars.</li>
+<li>Destructive: <code>error</code> fill with <code>on-primary</code> label; name what is destroyed ("Delete workout").</li>
+<li><code>radius-2</code>, 40px tall, <code>space-4</code> horizontal padding, <code>space-2</code> between icon and label.</li>
+<li><code>border-width</code> outline (transparent unless secondary or disabled). Focus: <code>focus-ring-width</code> <code>primary</code> ring, 2px offset.</li>
+</ul>
+<p>Don't put two primary buttons side by side, and don't use <code>primary-hover</code> as a resting colour.</p></div></article><article class="comp" id="c-input"><h3 class="h3">Input</h3><div class="stage"><div class="pdg-stack" style="align-items:flex-start">
+  <div class="pdg-field">
+    <label class="caption pdg-field__label" for="i1">Project name</label>
+    <input class="body pdg-input" id="i1" placeholder="e.g. Checkout redesign" aria-describedby="h1">
+    <p class="caption pdg-field__hint" id="h1">Shown on your portfolio card.</p>
+  </div>
+  <div class="pdg-field pdg-field--error">
+    <label class="caption pdg-field__label" for="i2">Time limit (minutes)</label>
+    <input class="body pdg-input" id="i2" value="0" aria-invalid="true" aria-describedby="h2">
+    <p class="caption pdg-field__hint" id="h2">Error: enter at least 5 minutes.</p>
+  </div>
+</div></div><div class="guide body"><p>A labelled single-line text field with optional hint or error message.</p>
+<p><strong>Markup:</strong> a <code>.pdg-field</code> wrapping a <code>&lt;label class="caption pdg-field__label"&gt;</code>, an <code>&lt;input class="body pdg-input"&gt;</code> and an optional <code>&lt;p class="caption pdg-field__hint"&gt;</code>. Add <code>pdg-field--error</code> to the wrapper for the error state, and point <code>aria-describedby</code> at the hint.</p>
+<p><strong>You provide:</strong> the label (always visible — placeholders are not labels), the <code>id</code>/<code>for</code> pairing, the value and validation message.</p>
+<ul>
+<li><code>surface</code> fill, <code>border-width</code> <code>border</code> outline, <code>radius-2</code>, <code>space-3</code> padding, <code>body</code> text; label in <code>caption</code> at weight 600, hint in <code>caption</code>; placeholder in <code>text-muted</code>.</li>
+<li>Hover lifts the outline to <code>text-muted</code>; focus adds the <code>focus-ring-width</code> <code>primary</code> ring.</li>
+<li>Error: <code>error</code> outline and <code>error</code> message text that says what to fix — never colour alone.</li>
+<li>Note: the <code>border</code> outline is 2.3:1 against <code>surface</code>, under 3:1; the visible label and <code>surface</code> fill carry the field's boundary alongside it.</li>
+</ul></div></article><article class="comp" id="c-card"><h3 class="h3">Card</h3><div class="stage"><div class="pdg-stack" style="align-items:flex-start">
+  <article class="pdg-card">
+    <span class="small pdg-badge pdg-badge--warning" style="align-self:flex-start">
+      <svg viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M6 3v3.5l2 1.2" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Due soon
+    </span>
+    <h3 class="h4 pdg-card__title">Redesign a checkout flow</h3>
+    <p class="caption pdg-card__meta">45 min session · Intermediate</p>
+    <p class="body pdg-card__body">Cut a five-step checkout down to three without losing the delivery options.</p>
+    <div class="pdg-card__actions">
+      <button class="body pdg-btn pdg-btn--primary">Start workout</button>
+      <button class="body pdg-btn pdg-btn--ghost">Read brief</button>
+    </div>
+  </article>
+</div></div><div class="guide body"><p>A <code>surface</code> container that groups one piece of content — a challenge, a submission, a stat.</p>
+<p><strong>Markup:</strong> <code>&lt;article class="pdg-card"&gt;</code> with <code>&lt;h3 class="h4 pdg-card__title"&gt;</code>, <code>&lt;p class="caption pdg-card__meta"&gt;</code> (<code>text-muted</code>), <code>&lt;p class="body pdg-card__body"&gt;</code> and <code>.pdg-card__actions</code>. Add <code>pdg-card--panel</code> for larger panels (<code>radius-4</code>).</p>
+<p><strong>You provide:</strong> the content and at most one primary action per card; the parent layout sets the card width and the <code>space-4</code> gap between cards.</p>
+<ul>
+<li><code>surface</code> on <code>background</code>, <code>border-width</code> <code>border</code> outline, <code>radius-3</code>, <code>space-5</code> padding, <code>space-3</code> between parts.</li>
+<li>Use <code>radius-4</code> (<code>--panel</code>) for large cards and panels; keep related cards on the same radius.</li>
+<li>No coloured left-edge accents or shadows — status goes in a <strong>StatusBadge</strong>.</li>
+</ul></div></article><article class="comp" id="c-statusbadge"><h3 class="h3">StatusBadge</h3><div class="stage"><div class="pdg-stack">
+  <span class="small pdg-badge pdg-badge--success"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 6.5l2.2 2.2L9.5 3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Passed</span>
+  <span class="small pdg-badge pdg-badge--warning"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 1.5l4.8 8.5H1.2z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M6 5v2.2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>Due soon</span>
+  <span class="small pdg-badge pdg-badge--error"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 3l6 6M9 3l-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>Failed</span>
+  <span class="small pdg-badge pdg-badge--neutral"><svg viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="4.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-dasharray="2 1.6"/></svg>Draft</span>
+</div></div><div class="guide body"><p>A small label that states a status with an icon and a word, coloured by <code>success</code>, <code>warning</code> or <code>error</code>.</p>
+<p><strong>Markup:</strong> <code>&lt;span class="small pdg-badge pdg-badge--success"&gt;&lt;svg aria-hidden="true"&gt;…&lt;/svg&gt;Passed&lt;/span&gt;</code>. Variants: <code>--success</code>, <code>--warning</code>, <code>--error</code>, <code>--neutral</code> (<code>text-muted</code>).</p>
+<p><strong>You provide:</strong> the word (required — colour never carries the status alone) and a matching 12px icon drawn with <code>currentColor</code>.</p>
+<ul>
+<li><code>surface</code> fill, <code>border-width</code> outline and text in the status colour, <code>radius-1</code>, <code>small</code> type at weight 600, <code>space-1</code> × <code>space-2</code> padding.</li>
+<li><code>success</code> for successful outcomes, <code>warning</code> for caution, <code>error</code> for errors; all read at 5.9:1 or better on <code>surface</code>.</li>
+<li>Keep the word short: "Passed", "Due soon", "Failed", "Draft".</li>
+</ul></div></article></section>
+<section id="logo"><h2 class="h2">Logo</h2><div class="logo-row"><img src="assets/Logos/product-designer-gym-neon.png" alt="Product Designer Gym neon sign logo: a flexed arm inside a selection frame with a sparkle and cursor, above the stacked wordmark"><div class="body"><p>The Product Designer Gym logo as a photographed neon sign (1278 × 1231 PNG) on a dark brick wall. Use it as a hero or brand image on <code>background</code>, never on a light ground. It is a raster photograph, not a vector mark: do not recolour, redraw or crop out the glow, and do not shrink it below about 160px wide — the wordmark stops reading.</p></div></div></section>
+<footer class="small muted">Product Designer Gym design system · this page reads <code>tokens.css</code> and <code>components/bundle.css</code>, so it always matches what prototypes use · <a href="https://github.com/phoebeyudesign/ProductDesignerGym">Source on GitHub</a></footer>
+</main></div>
+<script>
+(function(){var w=document.getElementById('coverWrap');if(!w)return;var c=w.querySelector('.cover');
+function fit(){var s=Math.min(1,w.clientWidth/960);c.style.transform='scale('+s+')';w.style.height=(288*s)+'px';}
+fit();addEventListener('resize',fit);})();
+</script>
+<script>
+// Fill in each token's value from tokens.css, so the labels always match the real values.
+(function(){var cs=getComputedStyle(document.documentElement);
+function v(n){return cs.getPropertyValue('--'+n).trim();}
+function set(el,n){var x=v(n);if(!el||!x)return;var t=el.textContent,i=t.indexOf(' · ');el.textContent=x+(i>-1?t.slice(i):'');}
+document.querySelectorAll('.swatch').forEach(function(e){var n=e.querySelector('.sw-name');if(n)set(e.querySelector('.sw-val'),n.textContent.trim());});
+document.querySelectorAll('.scale-row').forEach(function(e){var n=e.querySelector('.tok');if(n)set(e.querySelector('.v'),n.textContent.trim());});
+document.querySelectorAll('.rad,.bw').forEach(function(e){var n=e.querySelector('.tok');if(n)set(e.querySelector('.tok + .small'),n.textContent.trim());});
+})();
+</script>
+</body></html>
+
+A dark, neon-lit system for Product Designer Gym: interfaces that feel like a training floor for design skills — a dark canvas, one electric-blue action colour, and plain, confident DM Sans type.
+
+## Brand
+
+- Write the name as **Product Designer Gym** — three words, title case, never abbreviated in UI copy.
+- The logo is a photographed neon sign: a flexed-arm icon inside a design-tool selection frame (corner handles), a sparkle and a cursor, over the stacked wordmark. Use `product-designer-gym-neon.png` from **Logos** as a hero or brand image on `background`; it carries its own brick-wall backdrop, so never place it on a light ground or crop the sign's glow tightly.
+- The sign's violet sparkle, pink frame and orange cursor belong to the logo image only. They are **not** UI colours: interfaces use the tokens below.
+- No vector mark has been supplied, so there is no small-size logo or favicon yet. Do not redraw the sign; set the name in `h4` / `text` where a compact mark is needed.
+
+## Colour
+
+The system has one theme, **Dark**.
+
+- Paint the app canvas `background`; cards, modals and input fields `surface`.
+- Set headings and body copy in `text`; secondary text, hints and descriptions in `text-muted`.
+- Use `primary` for primary actions, links and active elements, and `primary-hover` only for their hover state — it is not a second brand colour.
+- Label any `primary`, `primary-hover` or `error` fill with `on-primary` (the dark canvas colour). White on `primary` is 1.9:1 and fails.
+- Use `success` for successful outcomes, `warning` for caution and `error` for errors or destructive actions. Never signal status through colour alone: pair it with an icon and a word (see **StatusBadge**).
+- Use `border` for dividers, outlines and input borders. It measures 2.6:1 on `background` and 2.3:1 on `surface`, under the 3:1 recommended for control boundaries — rely on the field's `surface` fill and its label as well as the outline, and use the `primary` focus ring to mark the active field.
+- Check contrast for each actual pairing; target WCAG AA — 4.5:1 for normal text, 3:1 for large text and for meaningful graphics and control boundaries.
+
+## Typography
+
+- Set everything in DM Sans (`--font-sans`). It is a hosted Google Font: load it in the project before applying these tokens, e.g. `https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400..700&display=swap`.
+- Headings: `h1` 40/48 bold for page titles (one per page; about 32px on small screens), `h2` 32/40 bold for sections, `h3` 24/32 semibold for subsections, `h4` 20/28 semibold for card and component titles. Keep them in descending order.
+- Text: `body` 16/24 for primary content, `caption` 14/20 for supporting information, `small` 12/16 for secondary labels and timestamps.
+- Reserve `tiny` (10/12, medium) for nonessential decorative metadata; keep anything essential at 12px or larger.
+- Apply type through the type-style classes (`class="body"`, `caption`, `h4`, `small`…), never by hard-coding a font size. Components set only a weight on top of them (labels and badges at 600).
+
+## Spacing and layout
+
+- Use only the spacing scale `space-1` (4px) to `space-7` (48px) — no arbitrary numbers.
+- Default gaps are `space-4` (16px), card padding is `space-5` (24px), and major sections sit `space-7` (48px) apart. Inputs pad at `space-3`.
+
+## Radii
+
+- Buttons and inputs `radius-2` (8px); cards and dropdowns `radius-3` (12px); larger panels `radius-4` (16px); badges and small controls `radius-1` (4px).
+- Use `radius-none` (0) for full-bleed images and tables that run edge to edge, and `radius-full` (9999px) for pills and circles.
+- Keep radii consistent between related components. Use `radius-5` and `radius-full` selectively, for hero, feature and pill shapes.
+
+## Borders
+
+- Draw every outline and divider at `border-width` (1px) and every focus outline at `focus-ring-width` (2px) — never a literal pixel width.
+
+## Interaction
+
+- One visually dominant primary button per screen or task area; everything else is secondary or ghost.
+- Every interactive element shows a visible keyboard focus state: a solid `focus-ring-width` `primary` ring with a 2px offset (8.8:1 on `background`, 7.8:1 on `surface`).
+- Destructive actions use `error` and say what they destroy ("Delete workout").
+
+## Iconography
+
+No icon set has been supplied. The logo's motifs — the selection frame with corner handles, the sparkle and the cursor — are the brand's visual language; when an icon set is chosen, prefer a single-weight outline style that matches the neon tubing, and always pair status icons with a word.
+
+## Components
+
+The component styles live in `components/bundle.css` as plain CSS classes (prefix `pdg-`); there is no JavaScript bundle. The spec names actions, inputs, cards and status colours, so the system includes **Button**, **Input**, **Card** and **StatusBadge** built strictly from these tokens.
+
+/* Product Designer Gym — generated from tokens.json */
+:root, [data-theme="dark"] {
+  --primary: #00BFFF;
+  --primary-hover: #33CCFF;
+  --on-primary: var(--background);
+  --background: #111318;
+  --surface: #1B1F2A;
+  --text: #F5F5F5;
+  --text-muted: #C4CAD4;
+  --border: #515867;
+  --success: #00E676;
+  --warning: #FFD166;
+  --error: #FF6B6B;
+}
+:root {
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --radius-none: 0;
+  --radius-1: 4px;
+  --radius-2: 8px;
+  --radius-3: 12px;
+  --radius-4: 16px;
+  --radius-5: 24px;
+  --radius-full: 9999px;
+  --border-width: 1px;
+  --focus-ring-width: 2px;
+  --font-sans: "DM Sans", sans-serif;
+  --text-h1: 700 40px/48px var(--font-sans);
+  --text-h2: 700 32px/40px var(--font-sans);
+  --text-h3: 600 24px/32px var(--font-sans);
+  --text-h4: 600 20px/28px var(--font-sans);
+  --text-body: 400 16px/24px var(--font-sans);
+  --text-caption: 400 14px/20px var(--font-sans);
+  --text-small: 400 12px/16px var(--font-sans);
+  --text-tiny: 500 10px/12px var(--font-sans);
+}
+.h1 {
+  font-family: var(--font-sans);
+  font-size: 40px;
+  line-height: 48px;
+  font-weight: 700;
+}
+.h2 {
+  font-family: var(--font-sans);
+  font-size: 32px;
+  line-height: 40px;
+  font-weight: 700;
+}
+.h3 {
+  font-family: var(--font-sans);
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 600;
+}
+.h4 {
+  font-family: var(--font-sans);
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 600;
+}
+.body {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+}
+.caption {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+}
+.small {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 400;
+}
+.tiny {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  line-height: 12px;
+  font-weight: 500;
+}
+
+{
+  "name": "Product Designer Gym",
+  "version": 1,
+  "color": {
+    "themes": [
+      {
+        "id": "dark",
+        "name": "Dark"
+      }
+    ],
+    "tokens": [
+      {
+        "name": "primary",
+        "value": {
+          "dark": "#00BFFF"
+        },
+        "usage": "Primary actions, links and active elements. As text: 8.8:1 on `background`, 7.8:1 on `surface`. As a fill, label it with `on-primary`, never white (white on primary is 1.9:1). Also the keyboard focus ring."
+      },
+      {
+        "name": "primary-hover",
+        "value": {
+          "dark": "#33CCFF"
+        },
+        "usage": "Hover state of anything painted in `primary` — never a second primary colour."
+      },
+      {
+        "name": "on-primary",
+        "value": {
+          "dark": "{background}"
+        },
+        "usage": "Labels and icons on `primary` / `primary-hover` fills (8.8:1 / 9.9:1). Added alongside the spec: the spec gives no text colour for primary fills."
+      },
+      {
+        "name": "background",
+        "value": {
+          "dark": "#111318"
+        },
+        "usage": "The main app canvas."
+      },
+      {
+        "name": "surface",
+        "value": {
+          "dark": "#1B1F2A"
+        },
+        "usage": "Cards, modals and input backgrounds, on top of `background`."
+      },
+      {
+        "name": "text",
+        "value": {
+          "dark": "#F5F5F5"
+        },
+        "usage": "Headings and primary body text on `background` (17:1) and `surface` (15.1:1)."
+      },
+      {
+        "name": "text-muted",
+        "value": {
+          "dark": "#C4CAD4"
+        },
+        "usage": "Secondary text, hints and descriptions on `background` (11.3:1) and `surface` (10:1)."
+      },
+      {
+        "name": "border",
+        "value": {
+          "dark": "#515867"
+        },
+        "usage": "Dividers, outlines and input borders. Contrast flag: 2.6:1 on `background`, 2.3:1 on `surface` — below the 3:1 the spec asks of control boundaries, so fine for decorative dividers; an input relying on this outline alone to be found does not meet it."
+      },
+      {
+        "name": "success",
+        "value": {
+          "dark": "#00E676"
+        },
+        "usage": "Successful outcomes. Always paired with an icon or word. As text: 11.1:1 on `background`, 9.9:1 on `surface`."
+      },
+      {
+        "name": "warning",
+        "value": {
+          "dark": "#FFD166"
+        },
+        "usage": "Caution. Always paired with an icon or word. As text: 12.9:1 on `background`, 11.4:1 on `surface`."
+      },
+      {
+        "name": "error",
+        "value": {
+          "dark": "#FF6B6B"
+        },
+        "usage": "Errors and destructive actions. Always paired with an icon or word. As text: 6.7:1 on `background`, 5.9:1 on `surface`; as a fill, label it with `on-primary` (6.7:1)."
+      }
+    ]
+  },
+  "type": {
+    "fonts": [],
+    "families": {
+      "sans": "\"DM Sans\", sans-serif"
+    },
+    "groups": [
+      {
+        "name": "Headings",
+        "family": "sans",
+        "styles": [
+          {
+            "name": "h1",
+            "fontSize": "40px",
+            "lineHeight": "48px",
+            "fontWeight": 700,
+            "sample": "Train your design muscles",
+            "usage": "Page titles and hero headings. One per page; around 32px on small screens."
+          },
+          {
+            "name": "h2",
+            "fontSize": "32px",
+            "lineHeight": "40px",
+            "fontWeight": 700,
+            "sample": "This week's workouts",
+            "usage": "Main section headings."
+          },
+          {
+            "name": "h3",
+            "fontSize": "24px",
+            "lineHeight": "32px",
+            "fontWeight": 600,
+            "sample": "Critique drills",
+            "usage": "Subsection headings."
+          },
+          {
+            "name": "h4",
+            "fontSize": "20px",
+            "lineHeight": "28px",
+            "fontWeight": 600,
+            "sample": "Redesign a checkout flow",
+            "usage": "Card and component titles."
+          }
+        ]
+      },
+      {
+        "name": "Text",
+        "family": "sans",
+        "styles": [
+          {
+            "name": "body",
+            "fontSize": "16px",
+            "lineHeight": "24px",
+            "fontWeight": 400,
+            "sample": "Pick a challenge, set a timer and ship a solution before it runs out.",
+            "usage": "Default paragraphs and interface text."
+          },
+          {
+            "name": "caption",
+            "fontSize": "14px",
+            "lineHeight": "20px",
+            "fontWeight": 400,
+            "sample": "Due in 2 days · 45 min session",
+            "usage": "Helper text and metadata."
+          },
+          {
+            "name": "small",
+            "fontSize": "12px",
+            "lineHeight": "16px",
+            "fontWeight": 400,
+            "sample": "Updated 09 Oct 2026, 21:05",
+            "usage": "Secondary labels and timestamps. The smallest size for essential information."
+          },
+          {
+            "name": "tiny",
+            "fontSize": "10px",
+            "lineHeight": "12px",
+            "fontWeight": 500,
+            "sample": "v1.0 · NEON",
+            "usage": "Compact, nonessential decorative metadata only."
+          }
+        ]
+      }
+    ]
+  },
+  "spacing": {
+    "tokens": [
+      {
+        "name": "space-1",
+        "value": "4px",
+        "usage": "Icon gaps and micro adjustments."
+      },
+      {
+        "name": "space-2",
+        "value": "8px",
+        "usage": "Compact element spacing."
+      },
+      {
+        "name": "space-3",
+        "value": "12px",
+        "usage": "Input padding and small card gaps."
+      },
+      {
+        "name": "space-4",
+        "value": "16px",
+        "usage": "Standard padding and content gaps — the default gap."
+      },
+      {
+        "name": "space-5",
+        "value": "24px",
+        "usage": "Card padding and section spacing."
+      },
+      {
+        "name": "space-6",
+        "value": "32px",
+        "usage": "Large component gaps."
+      },
+      {
+        "name": "space-7",
+        "value": "48px",
+        "usage": "Major section separation and page layout."
+      }
+    ]
+  },
+  "radius": {
+    "tokens": [
+      {
+        "name": "radius-none",
+        "value": "0",
+        "usage": "Square corners for full-bleed images and tables that run edge to edge."
+      },
+      {
+        "name": "radius-1",
+        "value": "4px",
+        "usage": "Small controls and badges."
+      },
+      {
+        "name": "radius-2",
+        "value": "8px",
+        "usage": "Inputs and buttons."
+      },
+      {
+        "name": "radius-3",
+        "value": "12px",
+        "usage": "Cards and dropdowns."
+      },
+      {
+        "name": "radius-4",
+        "value": "16px",
+        "usage": "Large cards and panels."
+      },
+      {
+        "name": "radius-5",
+        "value": "24px",
+        "usage": "Feature panels and hero containers. Use selectively."
+      },
+      {
+        "name": "radius-full",
+        "value": "9999px",
+        "usage": "Fully rounded pills and circles — avatars, toggles, pill tags. Use selectively."
+      }
+    ]
+  },
+  "borderWidth": {
+    "tokens": [
+      {
+        "name": "border-width",
+        "value": "1px",
+        "usage": "Every component outline and divider: buttons, inputs, cards, badges."
+      },
+      {
+        "name": "focus-ring-width",
+        "value": "2px",
+        "usage": "Keyboard focus outline on every interactive element, drawn in `primary` with a 2px offset."
+      }
+    ]
+  }
+}
