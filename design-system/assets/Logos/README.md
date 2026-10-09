@@ -1,0 +1,1 @@
+The Product Designer Gym logo as a photographed neon sign (1278 × 1231 PNG) on a dark brick wall. Use it as a hero or brand image on `background`, never on a light ground. It is a raster photograph, not a vector mark: do not recolour, redraw or crop out the glow, and do not shrink it below about 160px wide — the wordmark stops reading.
