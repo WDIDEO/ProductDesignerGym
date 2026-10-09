@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Product Designer Gym</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="design-system/tokens.css">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100vh;background:var(--background);color:var(--text);font:var(--text-body);display:flex;flex-direction:column}
+  main{flex:1;width:100%;max-width:880px;margin:0 auto;padding:var(--space-7) var(--space-4);display:flex;flex-direction:column;justify-content:center;gap:var(--space-6)}
+  h1{margin:0;font:var(--text-h1)}
+  .lede{margin:0;color:var(--text-muted);max-width:560px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:var(--space-4)}
+  a.tile{display:flex;flex-direction:column;gap:var(--space-2);padding:var(--space-5);background:var(--surface);border:var(--border-width) solid var(--border);border-radius:var(--radius-3);color:var(--text);text-decoration:none;transition:border-color .12s}
+  a.tile:hover{border-color:var(--primary)}
+  a.tile:focus-visible{outline:var(--focus-ring-width) solid var(--primary);outline-offset:2px}
+  .tile h2{margin:0;font:var(--text-h4)}
+  .tile p{margin:0;font:var(--text-caption);color:var(--text-muted)}
+  .tile span{margin-top:var(--space-2);font:var(--text-body);font-weight:600;color:var(--primary)}
+  footer{padding:var(--space-5) var(--space-4);text-align:center;font:var(--text-caption);color:var(--text-muted);border-top:var(--border-width) solid var(--border)}
+  @media (max-width:600px){h1{font-size:32px;line-height:40px}}
+</style>
+</head>
+<body>
+<main>
+  <div style="display:flex;flex-direction:column;gap:var(--space-3)">
+    <h1>Product Designer Gym</h1>
+    <p class="lede">The cafe homepage and the design system it's built from.</p>
+  </div>
+  <div class="grid">
+    <a class="tile" href="cafe/">
+      <h2>Cafe homepage</h2>
+      <p>Menu, opening hours and visit details for Product Designer Gym Cafe.</p>
+      <span>Open the cafe →</span>
+    </a>
+    <a class="tile" href="design-system/">
+      <h2>Design system</h2>
+      <p>Colours, type, spacing, radii, components and brand rules.</p>
+      <span>Open the design system →</span>
+    </a>
+  </div>
+</main>
+<footer>© Product Designer Gym</footer>
+</body>
+</html>
