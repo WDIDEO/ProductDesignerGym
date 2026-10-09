@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400..700&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#0d1117}a{color:#4d8dff;text-decoration:none}a:hover{color:#7aa9ff}</style>
+</helmet>
+<div style="background:#0d1117;color:#e8ecf3;font-family:'DM Sans',sans-serif;font-size:16px;line-height:24px;min-height:100vh">
+<nav style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 24px;border-bottom:1px solid #2a313c;flex-wrap:wrap">
+<div style="font-size:20px;line-height:28px;font-weight:600;color:#e8ecf3">Product Designer Gym <span style="color:#4d8dff">Cafe</span></div>
+<div style="display:flex;gap:24px;align-items:center;flex-wrap:wrap">
+<a href="#menu" style="color:#e8ecf3">Menu</a><a href="#visit" style="color:#e8ecf3">Visit</a>
+
+</div></nav>
+
+<header style="max-width:1120px;margin:0 auto;padding:48px 24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:48px;align-items:center">
+<div style="display:flex;flex-direction:column;gap:24px">
+<div style="font-size:14px;line-height:20px;color:#9aa4b2;font-weight:600;">Coffee for the design practice</div>
+<h1 style="margin:0;font-size:40px;line-height:48px;font-weight:700;text-wrap:balance">Fuel up. Then ship something good.</h1>
+<p style="margin:0;color:#9aa4b2;font-size:16px;line-height:24px;max-width:480px">Product Designer Gym Cafe is the training floor's coffee bar: strong espresso, honest food and long tables for sketching, critiques and deep work.</p>
+<div style="display:flex;gap:16px;flex-wrap:wrap">
+<a href="#menu" style="background:#4d8dff;color:#0d1117;font-weight:600;padding:12px 24px;border-radius:8px;outline-offset:2px" style-focus="outline:2px solid #4d8dff;outline-offset:2px" style-hover="background:#7aa9ff;color:#0d1117">See the menu</a>
+
+</div></div>
+<img src="uploads/Cafe.png" alt="Product Design Gym Cafe neon sign" style="width:100%;height:auto;display:block;border-radius:16px">
+</header>
+
+<section id="menu" style="max-width:1120px;margin:0 auto;padding:48px 24px;display:flex;flex-direction:column;gap:24px">
+<h2 style="margin:0;font-size:32px;line-height:40px;font-weight:700">The menu</h2>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px">
+<sc-for list="{{ menu }}" as="m" hint-placeholder-count="4">
+<div style="background:#161c25;border:1px solid #2a313c;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:8px">
+<div style="display:flex;justify-content:space-between;gap:16px"><h3 style="margin:0;font-size:20px;line-height:28px;font-weight:600">{{ m.name }}</h3><span style="color:#4d8dff;font-weight:600">{{ m.price }}</span></div>
+<div style="font-size:14px;line-height:20px;color:#9aa4b2">{{ m.desc }}</div>
+</div>
+</sc-for>
+</div></section>
+
+
+
+<section id="visit" style="max-width:1120px;margin:0 auto;padding:48px 24px">
+<div style="background:#161c25;border:1px solid #2a313c;border-radius:16px;padding:48px 24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px">
+<div style="display:flex;flex-direction:column;gap:16px"><h2 style="margin:0;font-size:32px;line-height:40px;font-weight:700">Come train with us</h2>
+<p style="margin:0;color:#9aa4b2">Walk-ins welcome. Desks can be held for up to two hours.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px"><h4 style="margin:0;font-size:20px;line-height:28px;font-weight:600">Hours</h4>
+<div style="color:#9aa4b2">Mon–Fri 7:30–18:00</div><div style="color:#9aa4b2">Sat–Sun 9:00–16:00</div>
+<h4 style="margin:16px 0 0;font-size:20px;line-height:28px;font-weight:600">Find us</h4><div style="color:#9aa4b2">Address to be added</div></div>
+</div></section>
+<footer style="padding:24px;text-align:center;font-size:14px;line-height:20px;color:#9aa4b2;border-top:1px solid #2a313c">© Product Designer Gym Cafe</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      menu: [
+        {name:'Flat White',price:'$4.50',desc:'Double ristretto, silky microfoam.'},
+        {name:'Cold Brew Set',price:'$5.00',desc:'18-hour steep, served over a big cube.'},
+        {name:'Protein Bowl',price:'$12',desc:'Grains, egg, greens, tahini.'},
+        {name:'Pastry Pass',price:'$3.80',desc:'Daily bake from the counter.'}
+      ],
+      sessions: [
+        {when:'Tue 18:30',title:'Critique Circuit',note:'Bring one screen, get three perspectives.'},
+        {when:'Thu 12:30',title:'Lunch & Sketch',note:'30-minute drawing sprint.'},
+        {when:'Sat 10:00',title:'Portfolio Workout',note:'Small groups, honest feedback.'}
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>
