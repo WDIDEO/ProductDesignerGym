@@ -1,0 +1,38 @@
+<!-- @dsCard height=288 -->
+<!doctype html>
+<html><body>
+<style>
+  .cover { position: relative; width: 960px; height: 288px; background: var(--background); overflow: hidden; }
+  .cover svg { position: absolute; left: 0; top: 0; }
+  .b-primary { fill: var(--primary); rx: var(--radius-4); }
+  .b-muted { fill: var(--text-muted); rx: var(--radius-5); }
+  .b-border { fill: var(--border); rx: var(--radius-3); }
+  .b-warning { fill: var(--warning); rx: var(--radius-3); }
+  .frame { fill: none; stroke: var(--text); stroke-width: 1.5px; }
+  .handle { fill: var(--background); stroke: var(--text); stroke-width: 1.5px; rx: var(--radius-1); }
+  .name { position: absolute; left: 32px; top: 152px; margin: 0; font: 700 64px/0.95 var(--font-sans); color: var(--text); letter-spacing: -0.01em; white-space: nowrap; }
+  .tag { position: absolute; left: 32px; top: 236px; margin: 0; max-width: 440px; font: 400 14px/20px var(--font-sans); color: var(--text-muted); }
+</style>
+<div class="cover">
+  <svg width="960" height="120" viewBox="0 0 960 120" aria-hidden="true">
+    <!--
+      blocks: primary 432×88 (radius-4) · text-muted 192×88 (radius-5) · border 144×104 (radius-3) · warning 128×48 (radius-3); sides are spacing multiples (space-7 / space-4 / space-2)
+      arrangement: top-band skeleton (name is 20 letters, too wide for the 440px zone); neutral slabs bleed off the top and right, the primary block sits free inside a selection frame
+      pattern: literal motif — the logo's design-tool selection frame with square corner handles ("a training floor for design skills"), one frame + four handles, hairline in `text`
+      scales: gaps space-4 (16), frame offset space-2 (8), handles space-3 (12) at radius-1, inset space-6 (32)
+    -->
+    <rect class="b-border" x="32" y="-24" width="144" height="104"/>
+    <rect class="b-primary" x="192" y="16" width="432" height="88"/>
+    <rect class="frame" x="184" y="8" width="448" height="104"/>
+    <rect class="handle" x="178" y="2" width="12" height="12"/>
+    <rect class="handle" x="626" y="2" width="12" height="12"/>
+    <rect class="handle" x="178" y="106" width="12" height="12"/>
+    <rect class="handle" x="626" y="106" width="12" height="12"/>
+    <rect class="b-muted" x="656" y="-24" width="192" height="88"/>
+    <rect class="b-warning" x="864" y="-16" width="128" height="48"/>
+  </svg>
+  <h1 class="name">Product Designer Gym</h1>
+  <p class="tag">A dark, neon-lit system for interfaces that train design skills.</p>
+</div>
+<script></script>
+</body></html>
