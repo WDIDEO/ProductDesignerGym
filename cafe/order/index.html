@@ -1,0 +1,693 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Order to table · Product Designer Gym Cafe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../design-system/tokens.css">
+<link rel="stylesheet" href="../../design-system/components/bundle.css">
+<style>
+  *{box-sizing:border-box}
+  [hidden]{display:none !important}
+  body{margin:0;background:var(--background);color:var(--text);font:var(--text-body)}
+  a{color:var(--primary);text-decoration:none}
+  a:hover{color:var(--primary-hover)}
+  a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{outline:var(--focus-ring-width) solid var(--primary);outline-offset:2px}
+  h1,h2,h3,p{margin:0}
+  .muted{color:var(--text-muted)}
+  .visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+  /* Nav — matches the cafe homepage */
+  .nav{display:flex;align-items:center;justify-content:space-between;gap:var(--space-4);padding:var(--space-4) var(--space-5);border-bottom:var(--border-width) solid var(--border);flex-wrap:wrap}
+  .nav__brand{color:var(--text)}
+  .nav__links{display:flex;gap:var(--space-5);align-items:center;flex-wrap:wrap}
+  .nav__links a{color:var(--text)}
+  .nav__links a[aria-current="page"]{color:var(--primary)}
+
+  .wrap{max-width:1120px;margin:0 auto;padding:var(--space-6) var(--space-5) var(--space-7);display:flex;flex-direction:column;gap:var(--space-6)}
+  .intro{display:flex;flex-direction:column;gap:var(--space-2)}
+  .eyebrow{font-weight:600;color:var(--text-muted)}
+
+  /* Stepper */
+  .steps{list-style:none;margin:0;padding:0;display:flex;gap:var(--space-2);flex-wrap:wrap}
+  .steps li{display:flex}
+  .steps button,.steps span{display:inline-flex;align-items:center;gap:var(--space-2);padding:var(--space-1) var(--space-3);border:var(--border-width) solid var(--border);border-radius:var(--radius-full);background:transparent;color:var(--text-muted);font-weight:600}
+  .steps button{cursor:pointer;color:var(--text);border-color:var(--text-muted)}
+  .steps button:hover{border-color:var(--primary-hover);color:var(--primary-hover)}
+  .steps [aria-current="step"]{border-color:var(--primary);color:var(--primary)}
+  .steps svg{width:12px;height:12px}
+
+  /* Banner */
+  .banner{display:flex;gap:var(--space-3);align-items:flex-start;padding:var(--space-3) var(--space-4);background:var(--surface);border:var(--border-width) solid currentColor;border-radius:var(--radius-3)}
+  .banner svg{width:16px;height:16px;flex:none;margin-top:2px}
+  .banner p{color:var(--text)}
+  .banner--warning{color:var(--warning)}
+  .banner--error{color:var(--error)}
+  .banner--info{color:var(--primary)}
+
+  /* Layout */
+  .layout{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--space-6);align-items:start}
+  @media (min-width:900px){.layout--with-summary{grid-template-columns:minmax(0,1fr) 340px}}
+  .step{display:flex;flex-direction:column;gap:var(--space-5)}
+  .step__head{display:flex;flex-direction:column;gap:var(--space-2)}
+  .step__head h2:focus{outline:none}
+  .row{display:flex;gap:var(--space-3);align-items:center;flex-wrap:wrap}
+  .row--between{justify-content:space-between}
+
+  /* Floor map */
+  .map-card{max-width:none}
+  .map{position:relative;width:100%;aspect-ratio:10/9;background:var(--background);border:var(--border-width) solid var(--border);border-radius:var(--radius-3);overflow:hidden}
+  .map__zone{position:absolute;color:var(--text-muted)}
+  .map__fixture{position:absolute;display:flex;align-items:center;justify-content:center;text-align:center;padding:var(--space-2);border:var(--border-width) dashed var(--border);border-radius:var(--radius-2);color:var(--text-muted)}
+  .map__wall{position:absolute;left:0;right:0;border-top:var(--border-width) dashed var(--border)}
+  .table{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:0;background:var(--surface);color:var(--text);border:var(--border-width) solid var(--text-muted);border-radius:var(--radius-3);font-weight:600;cursor:pointer}
+  .table--round{border-radius:var(--radius-full)}
+  .table:hover{border-color:var(--primary-hover)}
+  .table[aria-pressed="true"]{background:var(--primary);border-color:var(--primary);color:var(--on-primary)}
+  .table:disabled{border-style:dashed;border-color:var(--border);color:var(--text-muted);cursor:not-allowed}
+  .table svg{width:12px;height:12px}
+  .legend{display:flex;gap:var(--space-4);flex-wrap:wrap;color:var(--text-muted)}
+  .legend span{display:inline-flex;gap:var(--space-2);align-items:center}
+  .legend i{display:inline-block;width:16px;height:16px;border:var(--border-width) solid var(--text-muted);border-radius:var(--radius-1);background:var(--surface)}
+  .legend i.sel{background:var(--primary);border-color:var(--primary)}
+  .legend i.off{border-style:dashed;border-color:var(--border)}
+  .legend svg{width:12px;height:12px}
+
+  .table-layout{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--space-5);align-items:start}
+  @media (min-width:900px){.table-layout{grid-template-columns:minmax(0,3fr) minmax(280px,2fr)}}
+  .table-side{display:flex;flex-direction:column;gap:var(--space-5)}
+  #banners:empty{display:none}
+  .manual{display:flex;gap:var(--space-3);align-items:flex-end;flex-wrap:wrap}
+  .manual .pdg-field{max-width:280px}
+
+  /* Choice (radio cards) */
+  .choices{display:flex;flex-direction:column;gap:var(--space-3);border:0;margin:0;padding:0}
+  .choices legend{padding:0;margin-bottom:var(--space-3);font-weight:600}
+  .choice{display:flex;gap:var(--space-3);align-items:flex-start;padding:var(--space-4);background:var(--surface);border:var(--border-width) solid var(--border);border-radius:var(--radius-2);cursor:pointer}
+  .choice:has(input:checked){border-color:var(--primary)}
+  .choice input{margin:4px 0 0;accent-color:var(--primary)}
+  .choice__text{display:flex;flex-direction:column;gap:var(--space-1)}
+  .choice__text strong{font-weight:600}
+
+  /* Menu */
+  .cat{display:flex;flex-direction:column;gap:var(--space-4)}
+  .items{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:var(--space-4)}
+  .item{max-width:none}
+  .item__top{display:flex;justify-content:space-between;gap:var(--space-4)}
+  .item__price{color:var(--primary);font-weight:600;white-space:nowrap}
+  .item__foot{display:flex;justify-content:space-between;align-items:center;gap:var(--space-3);margin-top:auto;min-height:40px}
+  .item--off .item__price{color:var(--text-muted)}
+
+  /* Quantity stepper */
+  .qty{display:inline-flex;align-items:center;gap:var(--space-2)}
+  .qty button{width:40px;padding:0}
+  .qty output{min-width:24px;text-align:center;font-weight:600}
+
+  /* Summary */
+  .summary{max-width:none;position:sticky;top:var(--space-5)}
+  .lines{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:var(--space-3)}
+  .line{display:flex;justify-content:space-between;gap:var(--space-3)}
+  .line__name{display:flex;gap:var(--space-2)}
+  .line__qty{color:var(--text-muted);min-width:24px}
+  .total{display:flex;justify-content:space-between;padding-top:var(--space-3);border-top:var(--border-width) solid var(--border);font-weight:600}
+  .summary .pdg-btn{width:100%}
+
+  /* Review */
+  .review-lines{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+  .review-line{display:flex;justify-content:space-between;align-items:center;gap:var(--space-4);padding:var(--space-3) 0;border-bottom:var(--border-width) solid var(--border);flex-wrap:wrap}
+  .review-line__info{display:flex;flex-direction:column;gap:var(--space-1)}
+  textarea.pdg-input{resize:vertical;min-height:88px;font:inherit}
+  .form{display:flex;flex-direction:column;gap:var(--space-5)}
+  .form .pdg-field{min-width:0}
+
+  /* Status tracker */
+  .track{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+  .track li{display:grid;grid-template-columns:24px 1fr;gap:var(--space-3);padding-bottom:var(--space-5);position:relative}
+  .track li:last-child{padding-bottom:0}
+  .track li:not(:last-child)::before{content:"";position:absolute;left:11px;top:24px;bottom:0;border-left:var(--border-width) solid var(--border)}
+  .track__dot{width:24px;height:24px;border-radius:var(--radius-full);border:var(--border-width) solid var(--border);display:flex;align-items:center;justify-content:center;background:var(--surface)}
+  .track__dot svg{width:12px;height:12px}
+  .track li.done .track__dot{border-color:var(--success);color:var(--success)}
+  .track li.now .track__dot{border-color:var(--primary);background:var(--primary);color:var(--on-primary)}
+  .track__text{display:flex;flex-direction:column;gap:var(--space-1)}
+  .track li.later .track__text{color:var(--text-muted)}
+  .meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:var(--space-4);padding-bottom:var(--space-4);margin-bottom:var(--space-2);border-bottom:var(--border-width) solid var(--border)}
+  .meta div{display:flex;flex-direction:column;gap:var(--space-1)}
+
+  /* Mobile order bar */
+  .mobilebar{display:none}
+  @media (max-width:899px){
+    body.has-bar{padding-bottom:88px}
+    body.has-bar .mobilebar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:10;align-items:center;justify-content:space-between;gap:var(--space-4);padding:var(--space-3) var(--space-4);background:var(--surface);border-top:var(--border-width) solid var(--border)}
+    body.has-bar .summary{display:none}
+    .summary{position:static}
+  }
+  @media (max-width:600px){.h1{font-size:32px;line-height:40px}}
+
+  /* Prototype scenario panel — not part of the visitor UI */
+  .proto{position:fixed;right:var(--space-4);bottom:var(--space-4);z-index:20;max-width:320px}
+  body.has-bar .proto{bottom:96px}
+  .proto summary{list-style:none;cursor:pointer;margin-left:auto;width:max-content}
+  .proto summary::-webkit-details-marker{display:none}
+  .proto__panel{margin-top:var(--space-2);max-width:none;border-style:dashed}
+  .proto__panel label{display:flex;gap:var(--space-2);align-items:flex-start;cursor:pointer}
+  .proto__panel input{margin-top:3px;accent-color:var(--primary)}
+  .proto__panel .pdg-btn{width:100%}
+
+  footer{padding:var(--space-5);text-align:center;color:var(--text-muted);border-top:var(--border-width) solid var(--border)}
+</style>
+</head>
+<body>
+<nav class="nav" aria-label="Main">
+  <a class="h4 nav__brand" href="../">Product Designer Gym <span style="color:var(--primary)">Cafe</span></a>
+  <div class="nav__links body">
+    <a href="../#menu">Menu</a>
+    <a href="../#visit">Visit</a>
+    <a href="./" aria-current="page">Order to table</a>
+  </div>
+</nav>
+
+<main class="wrap">
+  <div class="intro">
+    <p class="caption eyebrow">Already seated?</p>
+    <h1 class="h1">Order to your table</h1>
+    <p class="body muted">Find your table on the map, pick what you'd like, and we'll bring it over.</p>
+  </div>
+  <ol class="steps caption" id="steps" aria-label="Order progress"></ol>
+  <div id="banners" style="display:flex;flex-direction:column;gap:var(--space-3)"></div>
+  <div class="layout" id="layout">
+    <section class="step" id="step" aria-live="polite"></section>
+    <aside class="pdg-card pdg-card--panel summary" id="summary" aria-label="Your order"></aside>
+  </div>
+</main>
+
+<div class="mobilebar" id="mobilebar"></div>
+
+<details class="proto" id="proto">
+  <summary class="caption pdg-btn pdg-btn--secondary">Prototype scenarios</summary>
+  <div class="pdg-card proto__panel">
+    <p class="caption muted">For show and tell only. Toggle cases to see how the flow responds.</p>
+    <label class="caption"><input type="checkbox" data-scenario="kitchenClosing"> Kitchen closes in 15 min</label>
+    <label class="caption"><input type="checkbox" data-scenario="closed"> Table ordering is closed</label>
+    <label class="caption"><input type="checkbox" data-scenario="soldOutOnSubmit"> An item sells out at checkout</label>
+    <button class="caption pdg-btn pdg-btn--secondary" data-action="qr">Arrive by QR code at Table 6</button>
+    <button class="caption pdg-btn pdg-btn--secondary" data-action="advance">Advance order status</button>
+    <button class="caption pdg-btn pdg-btn--ghost" data-action="restart">Restart</button>
+  </div>
+</details>
+
+<footer class="caption">© Product Designer Gym Cafe</footer>
+
+<script>
+// ---------- Data ----------
+const ICON = {
+  check: '<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 6.5l2.3 2.3L9.5 3.8"/></svg>',
+  clock: '<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><circle cx="6" cy="6" r="4.6"/><path d="M6 3.6V6l1.6 1.2"/></svg>',
+  alert: '<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 1.6l4.6 8.4H1.4z"/><path d="M6 5v2.2M6 8.6v.1"/></svg>',
+  info: '<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><circle cx="6" cy="6" r="4.6"/><path d="M6 5.4v3M6 3.6v.1"/></svg>',
+  receipt: '<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 1.5h7v9l-1.2-.8-1.1.8-1.2-.8-1.2.8-1.1-.8-1.2.8z"/><path d="M4.3 4.3h3.4M4.3 6.3h3.4" stroke-linecap="round"/></svg>',
+  dot: '<svg viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="2.4" fill="currentColor"/></svg>'
+};
+
+// Map coordinates are % of the floor plan's width (x, w) and height (y, h). The plan is 10:9.
+const TABLES = [
+  {id:'1', zone:'Window', seats:2, round:true, x:6,  y:9,  w:12},
+  {id:'2', zone:'Window', seats:2, round:true, x:23, y:9,  w:12},
+  {id:'3', zone:'Window', seats:2, round:true, x:40, y:9,  w:12},
+  {id:'4', zone:'Main floor', seats:4, x:6,  y:35, w:17, h:16, openOrder:{by:'Sam', items:2, mins:6}},
+  {id:'5', zone:'Main floor', seats:4, x:28, y:35, w:17, h:16},
+  {id:'6', zone:'Main floor', seats:4, x:50, y:35, w:17, h:16},
+  {id:'7', zone:'Long table', seats:10, x:6, y:58, w:61, h:11},
+  {id:'P1', zone:'Patio', seats:2, round:true, x:6,  y:83, w:10, served:false},
+  {id:'P2', zone:'Patio', seats:2, round:true, x:20, y:83, w:10, served:false},
+  {id:'P3', zone:'Patio', seats:2, round:true, x:34, y:83, w:10, served:false}
+];
+
+const MENU = [
+  {cat:'Coffee', items:[
+    {id:'espresso', name:'Espresso', price:3.20, desc:'A short, sharp double shot.'},
+    {id:'flat', name:'Flat White', price:4.50, desc:'Double ristretto, silky microfoam.'},
+    {id:'oat', name:'Oat Latte', price:5.00, desc:'Oat milk, double shot, smooth finish.'},
+    {id:'matcha', name:'Matcha Latte', price:5.20, desc:'Ceremonial grade, lightly sweet.'}
+  ]},
+  {cat:'Cold drinks', items:[
+    {id:'coldbrew', name:'Cold Brew Set', price:5.00, desc:'18-hour steep, served over a big cube.'},
+    {id:'iced', name:'Iced Americano', price:4.20, desc:'Double shot over ice.'},
+    {id:'sparkling', name:'Sparkling Water', price:3.00, desc:'Chilled, with a slice of lemon.'}
+  ]},
+  {cat:'Food', kitchen:true, items:[
+    {id:'bowl', name:'Protein Bowl', price:12.00, desc:'Grains, egg, greens, tahini.'},
+    {id:'toast', name:'Avocado Toast', price:10.00, desc:'Sourdough, chilli, lime, seeds.'},
+    {id:'cheese', name:'Grilled Cheese', price:9.00, desc:'Three cheeses, pickles on the side.', soldOut:true}
+  ]},
+  {cat:'Bakes', items:[
+    {id:'pastry', name:'Pastry Pass', price:3.80, desc:'Daily bake from the counter.'},
+    {id:'banana', name:'Banana Bread', price:4.00, desc:'Toasted, with salted butter.'},
+    {id:'cookie', name:'Cookie', price:3.00, desc:'Brown butter, dark chocolate.'}
+  ]}
+];
+const ITEMS = Object.fromEntries(MENU.flatMap(c => c.items.map(i => [i.id, {...i, kitchen:!!c.kitchen}])));
+const TRACK = [
+  {title:'Order received', note:'The bar has your order.'},
+  {title:'Being made', note:'Drinks first, food follows.'},
+  {title:'On its way', note:'Look out for someone heading to your table.'},
+  {title:'At your table', note:'Enjoy. Need anything else? Order another round.'}
+];
+
+// ---------- State ----------
+const fresh = () => ({
+  step:'table',          // table | menu | review | status
+  table:null,            // selected table id
+  join:'join',           // join | separate (only for tables with an open order)
+  manualError:'',
+  cart:{},               // id -> qty
+  name:'', notes:'', pay:'now',
+  soldNow:null,          // id of item that sold out at checkout
+  order:null,            // {number, table, joined, items, total}
+  moving:false,          // changing table after ordering
+  notice:''
+});
+let state = fresh();
+const scenario = {kitchenClosing:false, closed:false, soldOutOnSubmit:false};
+
+// ---------- Helpers ----------
+const $ = s => document.querySelector(s);
+const money = n => '$' + n.toFixed(2);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const tableById = id => TABLES.find(t => t.id.toLowerCase() === String(id).trim().toLowerCase());
+const cartLines = () => Object.entries(state.cart).filter(([,q]) => q > 0).map(([id,q]) => ({...ITEMS[id], qty:q}));
+const cartCount = () => cartLines().reduce((n,l) => n + l.qty, 0);
+const cartTotal = () => cartLines().reduce((n,l) => n + l.qty * l.price, 0);
+const joined = () => { const t = tableById(state.table); return !!(t && t.openOrder && state.join === 'join'); };
+const badge = (kind, icon, word) => `<span class="small pdg-badge pdg-badge--${kind}">${ICON[icon]}${word}</span>`;
+const itemUnavailable = it => it.soldOut || it.id === state.soldNow;
+
+function go(step){
+  state.step = step;
+  // Status notices stay on the status page; the QR hint stays while browsing the menu
+  if (step !== 'status' && !(step === 'menu' && state.notice === 'qr')) state.notice = '';
+  render();
+  const h = $('#step h2');
+  if (h) h.focus();
+  window.scrollTo({top:0});
+}
+
+// ---------- Render ----------
+function render(){
+  const focusKey = document.activeElement && document.activeElement.dataset.key;
+  renderSteps();
+  renderBanners();
+  const stepEl = $('#step');
+  if (scenario.closed && state.step !== 'status') stepEl.innerHTML = viewClosed();
+  else stepEl.innerHTML = ({table:viewTable, menu:viewMenu, review:viewReview, status:viewStatus})[state.step]();
+  const showSummary = !scenario.closed && (state.step === 'menu' || state.step === 'review');
+  $('#summary').hidden = !showSummary;
+  $('#layout').classList.toggle('layout--with-summary', showSummary);
+  if (showSummary) $('#summary').innerHTML = viewSummary();
+  renderMobileBar();
+  if (focusKey){ const el = document.querySelector(`[data-key="${focusKey}"]`); if (el) el.focus(); }
+}
+
+function renderSteps(){
+  const order = ['table','menu','review','status'];
+  const labels = {table:'Table', menu:'Menu', review:'Review', status:'Status'};
+  const cur = order.indexOf(state.step);
+  $('#steps').hidden = scenario.closed && state.step !== 'status';
+  $('#steps').innerHTML = order.map((s,i) => {
+    const text = `${i < cur ? ICON.check : ''}${i+1} ${labels[s]}`;
+    if (i === cur) return `<li><span aria-current="step">${text}</span></li>`;
+    // Earlier steps are clickable until the order is placed
+    if (i < cur && state.step !== 'status') return `<li><button data-action="goto" data-step="${s}">${text}</button></li>`;
+    return `<li><span>${text}</span></li>`;
+  }).join('');
+}
+
+function renderBanners(){
+  const out = [];
+  if (scenario.kitchenClosing && !scenario.closed && state.step !== 'status')
+    out.push(`<div class="banner banner--warning" role="status">${ICON.alert}<p class="caption"><strong>Kitchen closes in 15 minutes.</strong> Last food orders by 17:45. Drinks and bakes are available until we close at 18:00.</p></div>`);
+  $('#banners').innerHTML = out.join('');
+}
+
+function viewClosed(){
+  return `
+  <div class="step__head">
+    <h2 class="h2" tabindex="-1">Table ordering is closed right now</h2>
+    <p class="body muted">We take table orders during opening hours. You can still grab something at the counter if we're open.</p>
+  </div>
+  <article class="pdg-card" style="max-width:none">
+    <h3 class="h4 pdg-card__title">Hours</h3>
+    <p class="body muted">Mon–Fri 7:30–18:00<br>Sat–Sun 9:00–16:00</p>
+    <div class="pdg-card__actions"><a class="body pdg-btn pdg-btn--secondary" href="../#menu">See the menu</a></div>
+  </article>`;
+}
+
+function viewTable(){
+  const sel = tableById(state.table);
+  const moving = state.moving;
+  const tables = TABLES.map(t => {
+    const h = t.round ? t.w * 10 / 9 : t.h;
+    const served = t.served !== false;
+    const label = `Table ${t.id}, ${t.zone}, seats ${t.seats}` +
+      (t.openOrder ? ', has an open order' : '') + (served ? '' : ', counter service only');
+    return `<button class="table ${t.round ? 'table--round' : ''} caption" style="left:${t.x}%;top:${t.y}%;width:${t.w}%;height:${h}%"
+      data-action="pick" data-id="${t.id}" data-key="table-${t.id}" aria-pressed="${state.table === t.id}" aria-label="${label}" ${served ? '' : 'disabled'}>
+      <span>${t.id}</span>${t.openOrder && !moving ? ICON.receipt : ''}</button>`;
+  }).join('');
+
+  return `
+  <div class="step__head">
+    <h2 class="h2" tabindex="-1">${moving ? 'Which table did you move to?' : 'Which table are you at?'}</h2>
+    <p class="body muted">Your table number is on the stand at the edge of the table.</p>
+  </div>
+
+  <div class="table-layout">
+  <div class="pdg-card pdg-card--panel map-card">
+    <div class="map" role="group" aria-label="Cafe floor plan">
+      <span class="map__zone small" style="left:6%;top:3%">Window</span>
+      <span class="map__zone small" style="left:6%;top:29%">Main floor</span>
+      <div class="map__fixture small" style="left:74%;top:9%;width:22%;height:46%">Counter &amp; pickup</div>
+      <div class="map__fixture small" style="left:74%;top:62%;width:22%;height:9%">Entrance</div>
+      <div class="map__wall" style="top:76%"></div>
+      <span class="map__zone small" style="left:6%;top:78%">Patio</span>
+      <span class="map__zone small" style="left:50%;top:84%;width:46%">Patio is counter service only</span>
+      ${tables}
+    </div>
+    <div class="legend small">
+      <span><i></i>Available</span>
+      <span><i class="sel"></i>Your table</span>
+      ${moving ? '' : `<span>${ICON.receipt}Someone at the table has ordered</span>`}
+      <span><i class="off"></i>Counter service only</span>
+    </div>
+  </div>
+
+  <div class="table-side">
+  ${sel ? viewSelectedTable(sel) : `<p class="body muted">Tap your table on the map to choose it.</p>`}
+  <form class="manual" data-form="manual" novalidate>
+    <div class="pdg-field ${state.manualError ? 'pdg-field--error' : ''}">
+      <label class="caption pdg-field__label" for="tableNo">Or type your table number</label>
+      <input class="body pdg-input" id="tableNo" name="tableNo" inputmode="numeric" autocomplete="off" placeholder="e.g. 5" ${state.manualError ? 'aria-describedby="tableNoHint" aria-invalid="true"' : ''}>
+      ${state.manualError ? `<p class="caption pdg-field__hint" id="tableNoHint">${state.manualError}</p>` : ''}
+    </div>
+    <button class="body pdg-btn pdg-btn--secondary" type="submit">Use this table</button>
+  </form>
+  </div>
+  </div>`;
+}
+
+function viewSelectedTable(t){
+  if (state.moving){
+    return `
+    <article class="pdg-card pdg-card--panel" style="max-width:none">
+      <h3 class="h4 pdg-card__title">Table ${t.id}</h3>
+      <p class="caption pdg-card__meta">${t.zone} · seats ${t.seats}</p>
+      <p class="body pdg-card__body">We'll bring order #${state.order.number} here instead of Table ${state.order.table}.</p>
+      <div class="pdg-card__actions">
+        <button class="body pdg-btn pdg-btn--primary" data-action="confirmMove">Move my order to Table ${t.id}</button>
+        <button class="body pdg-btn pdg-btn--ghost" data-action="cancelMove">Cancel</button>
+      </div>
+    </article>`;
+  }
+  const open = t.openOrder;
+  return `
+  <article class="pdg-card pdg-card--panel" style="max-width:none">
+    <h3 class="h4 pdg-card__title">Table ${t.id}</h3>
+    <p class="caption pdg-card__meta">${t.zone} · seats ${t.seats}</p>
+    ${open ? `
+      <p class="body pdg-card__body">${open.by} started an order for this table ${open.mins} min ago (${open.items} items).</p>
+      <fieldset class="choices">
+        <legend class="caption">How do you want to order?</legend>
+        <label class="choice"><input type="radio" name="join" value="join" ${state.join === 'join' ? 'checked' : ''} data-key="join-join">
+          <span class="choice__text"><strong class="body">Add to ${open.by}'s order</strong><span class="caption muted">One bill for the table. Everything arrives together.</span></span></label>
+        <label class="choice"><input type="radio" name="join" value="separate" ${state.join === 'separate' ? 'checked' : ''} data-key="join-separate">
+          <span class="choice__text"><strong class="body">Start my own order</strong><span class="caption muted">Separate bill. Still brought to Table ${t.id}.</span></span></label>
+      </fieldset>` : `<p class="body pdg-card__body">We'll bring your order here.</p>`}
+    <div class="pdg-card__actions">
+      <button class="body pdg-btn pdg-btn--primary" data-action="toMenu">Order for Table ${t.id}</button>
+    </div>
+  </article>`;
+}
+
+function viewMenu(){
+  const t = tableById(state.table);
+  const fromQr = state.notice === 'qr';
+  const head = `
+  <div class="step__head">
+    <h2 class="h2" tabindex="-1">What can we bring you?</h2>
+    <div class="row">
+      <p class="body muted">Ordering for <strong style="color:var(--text)">Table ${t.id}</strong>${joined() ? ` · adding to ${t.openOrder.by}'s order` : ''}</p>
+      <button class="body pdg-btn pdg-btn--ghost" data-action="goto" data-step="table" style="padding:0 var(--space-2)">Change table</button>
+    </div>
+    ${fromQr ? `<div class="banner banner--info" role="status">${ICON.info}<p class="caption">You scanned the code at Table ${t.id}. Sitting somewhere else? Change table.</p></div>` : ''}
+  </div>`;
+
+  const cats = MENU.map(c => `
+    <section class="cat" aria-labelledby="cat-${c.cat}">
+      <h3 class="h3" id="cat-${c.cat}">${c.cat}</h3>
+      <div class="items">${c.items.map(viewItem).join('')}</div>
+    </section>`).join('');
+  return head + cats;
+}
+
+function viewItem(it){
+  const full = ITEMS[it.id];
+  const off = itemUnavailable(full);
+  const q = state.cart[it.id] || 0;
+  let control;
+  if (off) control = badge('neutral', 'dot', 'Sold out');
+  else if (q === 0) control = `<button class="body pdg-btn pdg-btn--secondary" data-action="inc" data-id="${it.id}" data-key="inc-${it.id}" aria-label="Add ${it.name}">Add</button>`;
+  else control = qtyControl(it, q);
+  const lastOrders = full.kitchen && scenario.kitchenClosing && !off ? badge('warning', 'clock', 'Last orders') : '';
+  return `
+  <article class="pdg-card item ${off ? 'item--off' : ''}">
+    <div class="item__top"><h4 class="h4 pdg-card__title">${it.name}</h4><span class="body item__price">${money(it.price)}</span></div>
+    <p class="caption pdg-card__meta">${it.desc}</p>
+    <div class="item__foot">${lastOrders || '<span></span>'}${control}</div>
+  </article>`;
+}
+
+function qtyControl(it, q){
+  return `<div class="qty" role="group" aria-label="${it.name} quantity">
+    <button class="body pdg-btn pdg-btn--secondary" data-action="dec" data-id="${it.id}" data-key="dec-${it.id}" aria-label="Remove one ${it.name}">−</button>
+    <output class="body" aria-live="polite">${q}</output>
+    <button class="body pdg-btn pdg-btn--secondary" data-action="inc" data-id="${it.id}" data-key="inc-${it.id}" aria-label="Add one more ${it.name}">+</button>
+  </div>`;
+}
+
+function viewSummary(){
+  const lines = cartLines();
+  const t = tableById(state.table);
+  const head = `<h2 class="h4 pdg-card__title">Your order</h2><p class="caption pdg-card__meta">Table ${t.id}${joined() ? ` · with ${t.openOrder.by}` : ''}</p>`;
+  if (!lines.length) return head + `<p class="body muted">Nothing yet. Add something from the menu to get started.</p>
+    <button class="body pdg-btn pdg-btn--primary" disabled>Review order</button>`;
+  return head + `
+    <ul class="lines body">${lines.map(l => `<li class="line"><span class="line__name"><span class="line__qty">${l.qty}×</span>${l.name}</span><span>${money(l.qty * l.price)}</span></li>`).join('')}</ul>
+    <div class="total body"><span>Total</span><span>${money(cartTotal())}</span></div>
+    ${state.step === 'menu' ? `<button class="body pdg-btn pdg-btn--primary" data-action="toReview">Review order</button>` : ''}`;
+}
+
+function renderMobileBar(){
+  const show = !scenario.closed && state.step === 'menu' && cartCount() > 0;
+  document.body.classList.toggle('has-bar', show);
+  $('#mobilebar').innerHTML = show ? `
+    <span class="body"><strong>${cartCount()} item${cartCount() === 1 ? '' : 's'}</strong> · ${money(cartTotal())}</span>
+    <button class="body pdg-btn pdg-btn--primary" data-action="toReview">Review order</button>` : '';
+}
+
+function viewReview(){
+  const t = tableById(state.table);
+  const lines = cartLines();
+  const sold = state.soldNow && ITEMS[state.soldNow];
+  const blocked = !lines.length || (sold && state.cart[sold.id] > 0);
+  return `
+  <div class="step__head">
+    <h2 class="h2" tabindex="-1">Check your order</h2>
+    <p class="body muted">We'll bring it to <strong style="color:var(--text)">Table ${t.id}</strong>.</p>
+  </div>
+
+  ${sold && state.cart[sold.id] ? `<div class="banner banner--error" role="alert">${ICON.alert}<p class="caption"><strong>Sorry, ${sold.name} just sold out.</strong> Remove it to place your order, or go back to the menu to swap it for something else.</p></div>` : ''}
+
+  ${lines.length ? `
+  <ul class="review-lines">
+    ${lines.map(l => `
+    <li class="review-line">
+      <div class="review-line__info">
+        <span class="body" style="font-weight:600">${l.name}</span>
+        <span class="caption muted">${money(l.price)} each</span>
+        ${l.id === state.soldNow ? badge('error', 'alert', 'Sold out') : ''}
+      </div>
+      ${l.id === state.soldNow
+        ? `<button class="body pdg-btn pdg-btn--secondary" data-action="remove" data-id="${l.id}" data-key="remove-${l.id}">Remove ${l.name}</button>`
+        : qtyControl(l, l.qty)}
+    </li>`).join('')}
+  </ul>
+  <div><button class="body pdg-btn pdg-btn--ghost" data-action="goto" data-step="menu" style="padding:0">+ Add more items</button></div>
+  ` : `<p class="body muted">Your order is empty. <button class="body pdg-btn pdg-btn--ghost" data-action="goto" data-step="menu" style="padding:0">Back to the menu</button></p>`}
+
+  <form class="form" data-form="review" novalidate>
+    <div class="pdg-field">
+      <label class="caption pdg-field__label" for="name">Name (optional)</label>
+      <input class="body pdg-input" id="name" name="name" autocomplete="given-name" value="${esc(state.name)}" aria-describedby="nameHint">
+      <p class="caption pdg-field__hint" id="nameHint">So the team knows who to hand it to on a busy table.</p>
+    </div>
+    <div class="pdg-field">
+      <label class="caption pdg-field__label" for="notes">Notes for the bar and kitchen (optional)</label>
+      <textarea class="body pdg-input" id="notes" name="notes" aria-describedby="notesHint">${esc(state.notes)}</textarea>
+      <p class="caption pdg-field__hint" id="notesHint">Allergies, milk swaps, extra cutlery. Tell staff about serious allergies too.</p>
+    </div>
+    ${joined() ? `
+      <div class="banner banner--info">${ICON.receipt}<p class="caption">This goes on <strong>${t.openOrder.by}'s bill</strong> for Table ${t.id}. You'll pay together at the counter before you leave.</p></div>
+    ` : `
+    <fieldset class="choices">
+      <legend class="caption">How would you like to pay?</legend>
+      <label class="choice"><input type="radio" name="pay" value="now" ${state.pay === 'now' ? 'checked' : ''}>
+        <span class="choice__text"><strong class="body">Pay now</strong><span class="caption muted">Card, Apple Pay or Google Pay. Nothing to sort out later.</span></span></label>
+      <label class="choice"><input type="radio" name="pay" value="later" ${state.pay === 'later' ? 'checked' : ''}>
+        <span class="choice__text"><strong class="body">Pay at the counter before you leave</strong><span class="caption muted">Handy if you might order another round.</span></span></label>
+    </fieldset>`}
+    <div class="total body"><span>Total</span><span>${money(cartTotal())}</span></div>
+    <div class="row">
+      <button class="body pdg-btn pdg-btn--primary" type="submit" ${blocked ? 'disabled' : ''}>${joined() || state.pay === 'later' ? 'Place order' : 'Pay and place order'} · ${money(cartTotal())}</button>
+      <button class="body pdg-btn pdg-btn--ghost" type="button" data-action="goto" data-step="menu">Back to menu</button>
+    </div>
+  </form>`;
+}
+
+function viewStatus(){
+  const o = state.order;
+  const i = o.status;
+  const done = i === TRACK.length - 1;
+  const t = tableById(o.table);
+  const steps = TRACK.map((s, n) => {
+    const cls = n < i || (done && n === i) ? 'done' : n === i ? 'now' : 'later';
+    const icon = cls === 'done' ? ICON.check : cls === 'now' ? ICON.dot : '';
+    const word = cls === 'done' ? badge('success', 'check', 'Done') : cls === 'now' ? `<span class="small" style="color:var(--primary);font-weight:600">Now</span>` : '';
+    return `<li class="${cls}"><span class="track__dot">${icon}</span>
+      <div class="track__text"><div class="row"><strong class="body" style="font-weight:600">${s.title}</strong>${word}</div>
+      ${n === i ? `<p class="caption muted">${s.note}</p>` : ''}</div></li>`;
+  }).join('');
+
+  return `
+  <div class="step__head">
+    <div class="row">${done ? badge('success', 'check', 'Delivered') : badge('neutral', 'clock', 'In progress')}</div>
+    <h2 class="h2" tabindex="-1">${done ? 'Enjoy!' : `We're on it`}</h2>
+    <p class="body muted">${done ? `Your order is at Table ${t.id}.` : `We'll bring it to Table ${t.id}. Usually about ${o.eta} minutes.`}</p>
+  </div>
+  ${state.notice === 'moved' ? `<div class="banner banner--info" role="status">${ICON.info}<p class="caption">Got it. We'll bring your order to <strong>Table ${t.id}</strong>.</p></div>` : ''}
+  ${state.notice === 'help' ? `<div class="banner banner--info" role="status">${ICON.info}<p class="caption">Someone from the team is heading to Table ${t.id}.</p></div>` : ''}
+
+  <div class="pdg-card pdg-card--panel" style="max-width:none">
+    <div class="meta">
+      <div><span class="caption muted">Order</span><span class="body" style="font-weight:600">#${o.number}</span></div>
+      <div><span class="caption muted">Table</span><span class="body" style="font-weight:600">${t.id} · ${t.zone}</span></div>
+      <div><span class="caption muted">Payment</span><span class="body" style="font-weight:600">${o.joined ? `On ${t.openOrder.by}'s bill` : o.pay === 'now' ? 'Paid' : 'Pay at counter'}</span></div>
+    </div>
+    <ol class="track" aria-label="Order status">${steps}</ol>
+  </div>
+
+  <article class="pdg-card" style="max-width:none">
+    <h3 class="h4 pdg-card__title">What you ordered</h3>
+    <ul class="lines body">${o.items.map(l => `<li class="line"><span class="line__name"><span class="line__qty">${l.qty}×</span>${l.name}</span><span>${money(l.qty * l.price)}</span></li>`).join('')}</ul>
+    <div class="total body"><span>Total</span><span>${money(o.total)}</span></div>
+  </article>
+
+  <div class="row">
+    <button class="body pdg-btn pdg-btn--secondary" data-action="again">${done ? 'Order another round' : 'Add something else'}</button>
+    ${done ? '' : `<button class="body pdg-btn pdg-btn--ghost" data-action="move">I moved tables</button>`}
+    <button class="body pdg-btn pdg-btn--ghost" data-action="help">Ask for help</button>
+  </div>`;
+}
+
+// ---------- Actions ----------
+function pickTable(id){
+  const t = tableById(id);
+  if (!t) return;
+  state.table = t.id;
+  state.join = 'join';
+  state.manualError = '';
+  render();
+}
+
+function placeOrder(){
+  // Scenario: the first item in the cart sells out between review and submit
+  if (scenario.soldOutOnSubmit && !state.soldNow){
+    const first = cartLines()[0];
+    if (first){ state.soldNow = first.id; render(); $('.banner--error')?.focus?.(); return; }
+  }
+  const t = tableById(state.table);
+  state.order = {
+    number: String(400 + Math.floor(Math.random() * 99)),
+    table: t.id,
+    joined: joined(),
+    pay: state.pay,
+    items: cartLines(),
+    total: cartTotal(),
+    eta: cartLines().some(l => l.kitchen) ? 12 : 6,
+    status: 0
+  };
+  state.cart = {};
+  go('status');
+}
+
+document.addEventListener('click', e => {
+  const el = e.target.closest('[data-action]');
+  if (!el) return;
+  const a = el.dataset.action, id = el.dataset.id;
+  if (a === 'pick') pickTable(id);
+  if (a === 'toMenu'){ state.notice = ''; go('menu'); }
+  if (a === 'goto'){
+    if (el.dataset.step === 'table' && state.order) state.moving = false;
+    go(el.dataset.step);
+  }
+  if (a === 'inc'){ state.cart[id] = (state.cart[id] || 0) + 1; render(); }
+  if (a === 'dec'){ state.cart[id] = Math.max(0, (state.cart[id] || 0) - 1); render(); }
+  if (a === 'remove'){ delete state.cart[id]; render(); }
+  if (a === 'toReview') go('review');
+  if (a === 'again'){ state.notice = ''; state.soldNow = null; go('menu'); }
+  if (a === 'move'){ state.moving = true; state.table = null; go('table'); }
+  if (a === 'cancelMove'){ state.moving = false; state.table = state.order.table; go('status'); }
+  if (a === 'confirmMove'){ state.order.table = state.table; state.moving = false; state.notice = 'moved'; go('status'); }
+  if (a === 'help'){ state.notice = 'help'; render(); }
+  // Prototype controls
+  if (a === 'advance' && state.order){ state.order.status = Math.min(TRACK.length - 1, state.order.status + 1); state.notice = ''; render(); }
+  if (a === 'restart'){ state = fresh(); go('table'); }
+  if (a === 'qr'){ state = fresh(); state.table = '6'; state.notice = 'qr'; go('menu'); }
+});
+
+document.addEventListener('change', e => {
+  const el = e.target;
+  if (el.name === 'join'){ state.join = el.value; }
+  if (el.name === 'pay'){ state.pay = el.value; render(); }
+  if (el.dataset.scenario){ scenario[el.dataset.scenario] = el.checked; if (el.dataset.scenario === 'soldOutOnSubmit') state.soldNow = null; render(); }
+});
+
+document.addEventListener('input', e => {
+  if (e.target.id === 'name') state.name = e.target.value;
+  if (e.target.id === 'notes') state.notes = e.target.value;
+});
+
+document.addEventListener('submit', e => {
+  e.preventDefault();
+  const form = e.target.dataset.form;
+  if (form === 'manual'){
+    const v = e.target.tableNo.value.trim();
+    const t = tableById(v);
+    if (!v) state.manualError = 'Enter the number on your table stand.';
+    else if (!t) state.manualError = `We don't have a Table ${esc(v)}. Check the stand at the edge of your table.`;
+    else if (t.served === false) state.manualError = `Table ${t.id} is on the patio. We can't bring orders out there yet, so please order at the counter.`;
+    else return pickTable(t.id);
+    render();
+    $('#tableNo').focus();
+  }
+  if (form === 'review') placeOrder();
+});
+
+// Deep link from a table's QR code: ?table=6
+const qrTable = tableById(new URLSearchParams(location.search).get('table') || '');
+if (qrTable && qrTable.served !== false){ state.table = qrTable.id; state.notice = 'qr'; state.step = 'menu'; }
+render();
+</script>
+</body>
+</html>
