@@ -1,8 +1,8 @@
 # Pickup-order prototype
 
-Local implementation using the existing café menu, café image, DM Sans, design tokens, and Button/Input/StatusBadge classes. The homepage links to `pickup/`. No dependencies or build step are needed.
+Local implementation using the existing café menu, café image, DM Sans, design tokens, and Button/Input/StatusBadge classes. The café homepage displays both ordering flows with a Take away / Order to table toggle. Takeaway uses the dark theme; table ordering uses the light theme. Switching preserves each flow’s in-session bag and progress. Standalone `pickup/` and `order/` routes remain available. No dependencies or build step are needed.
 
-From the repository root, run `python3 -m http.server 4173` and visit http://localhost:4173/cafe/pickup/.
+From the repository root, run `python3 -m http.server 4173` and visit http://localhost:4173/cafe/.
 
 ## Flow
 
