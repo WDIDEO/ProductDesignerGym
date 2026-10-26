@@ -1,16 +1,24 @@
 /* Product Designer Gym — generated from tokens.json */
-:root, [data-theme="dark"] {
-  --primary: #00BFFF;
-  --primary-hover: #33CCFF;
-  --on-primary: var(--background);
-  --background: #111318;
-  --surface: #1B1F2A;
-  --text: #F5F5F5;
-  --text-muted: #C4CAD4;
-  --border: #515867;
-  --success: #00E676;
-  --warning: #FFD166;
-  --error: #FF6B6B;
+:root, [data-theme="light"] {
+  --primary: #161616;
+  --primary-hover: #3A3A3A;
+  --on-primary: #FFFFFF;
+  --accent: #B9F17C;
+  --on-accent: #1E3A06;
+  --background: #F4F4F4;
+  --surface: #FFFFFF;
+  --surface-sunk: #EBEBEB;
+  --text: #161616;
+  --text-muted: #666666;
+  --border: #E3E3E3;
+  --border-strong: #8A8A8A;
+  --success: #2F7D32;
+  --warning: #8A5300;
+  --error: #C62828;
+  --tint-coffee: #FFF3BF;
+  --tint-cold: #DCEAFB;
+  --tint-food: #E2F5D1;
+  --tint-bakes: #FDDFE5;
 }
 :root {
   --space-1: 4px;
@@ -26,10 +34,12 @@
   --radius-3: 12px;
   --radius-4: 16px;
   --radius-5: 24px;
+  --radius-6: 32px;
   --radius-full: 9999px;
   --border-width: 1px;
   --focus-ring-width: 2px;
   --font-sans: "DM Sans", sans-serif;
+  --text-display: 500 92px/1 var(--font-sans);
   --text-h1: 700 40px/48px var(--font-sans);
   --text-h2: 700 32px/40px var(--font-sans);
   --text-h3: 600 24px/32px var(--font-sans);
@@ -38,6 +48,13 @@
   --text-caption: 400 14px/20px var(--font-sans);
   --text-small: 400 12px/16px var(--font-sans);
   --text-tiny: 500 10px/12px var(--font-sans);
+}
+.display {
+  font-family: var(--font-sans);
+  font-size: clamp(48px, 7.4vw, 92px);
+  line-height: 1;
+  font-weight: 500;
+  letter-spacing: -0.045em;
 }
 .h1 {
   font-family: var(--font-sans);
@@ -86,4 +103,13 @@
   font-size: 10px;
   line-height: 12px;
   font-weight: 500;
+}
+.label {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
 }

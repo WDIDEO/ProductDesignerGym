@@ -6,7 +6,7 @@ A labelled single-line text field with optional hint or error message.
 
 **You provide:** the label (always visible — placeholders are not labels), the `id`/`for` pairing, the value and validation message.
 
-- `surface` fill, `border-width` `border` outline, `radius-2`, `space-3` padding, `body` text; label in `caption` at weight 600, hint in `caption`; placeholder in `text-muted`.
-- Hover lifts the outline to `text-muted`; focus adds the `focus-ring-width` `primary` ring.
+- `surface` fill, `border-width` `border-strong` outline (3.5:1 on `surface`, 3.1:1 on `background`), `radius-3`, `space-3` padding, `body` text; label in `caption` at weight 600, hint in `caption`; placeholder in `text-muted`.
+- Hover darkens the outline to `text`; focus turns it `primary` and adds the `focus-ring-width` `primary` ring.
 - Error: `error` outline and `error` message text that says what to fix — never colour alone.
-- Note: the `border` outline is 2.3:1 against `surface`, under 3:1; the visible label and `surface` fill carry the field's boundary alongside it.
+- Never outline a field in `border`: at 1.3:1 it is decorative only.

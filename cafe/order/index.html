@@ -3,77 +3,50 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Corgi Cafe · Order to your spot</title>
+<title>Corgi Cafe · Order</title>
+<meta name="description" content="Order from Corgi Cafe for pickup at the counter, or to wherever you're sitting.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400..700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../design-system/tokens.css">
 <link rel="stylesheet" href="../../design-system/components/bundle.css">
 <style>
-  /* Light re-theme of the design-system tokens, from the "Café Experience" UI inspiration.
-     Same token names, so the pdg- components pick it up. */
-  :root{
-    --background:#F4F4F4;
-    --surface:#FFFFFF;
-    --surface-sunk:#EBEBEB;
-    --text:#161616;
-    --text-muted:#666666;
-    --border:#E3E3E3;
-    --primary:#161616;
-    --primary-hover:#3A3A3A;
-    --on-primary:#FFFFFF;
-    --accent:#B9F17C;
-    --on-accent:#1E3A06;
-    --success:#2F7D32;
-    --warning:#8A5300;
-    --error:#C62828;
-    --radius-6:32px;
-    --tint-coffee:#FFF3BF;
-    --tint-cold:#DCEAFB;
-    --tint-food:#E2F5D1;
-    --tint-bakes:#FDDFE5;
-    --side-w:400px;
-  }
   *{box-sizing:border-box}
   [hidden]{display:none !important}
+  html{scroll-behavior:smooth}
   body{margin:0;background:var(--background);color:var(--text);font:var(--text-body)}
   a{color:var(--text)}
   h1,h2,h3,p{margin:0}
   button{font-family:inherit}
   :focus-visible{outline:var(--focus-ring-width) solid var(--primary);outline-offset:2px}
   .muted{color:var(--text-muted)}
-  .pdg-btn{border-radius:var(--radius-full)}
-  .pdg-btn--secondary{border-color:var(--border);background:var(--surface)}
-  .pdg-btn--secondary:hover{border-color:var(--text);color:var(--text)}
-  .pdg-btn--ghost{color:var(--text);text-decoration:underline;text-underline-offset:3px}
-  .pdg-btn--ghost:hover{color:var(--text-muted)}
-  .pdg-btn:disabled{background:var(--surface-sunk);border-color:transparent}
-  .pdg-input{border-radius:var(--radius-3)}
+  .skip{position:absolute;left:var(--space-4);top:-100px;padding:var(--space-3);background:var(--primary);color:var(--on-primary);z-index:50;border-radius:var(--radius-2)}
+  .skip:focus{top:var(--space-3)}
 
   .wrap{max-width:1360px;margin:0 auto;padding:var(--space-6) var(--space-5) var(--space-7);display:flex;flex-direction:column;gap:var(--space-6)}
   .top{display:flex;justify-content:space-between;align-items:flex-start;gap:var(--space-4);flex-wrap:wrap}
   .top__title{display:flex;flex-direction:column;gap:var(--space-3)}
   .back{color:var(--text-muted);text-decoration:none}
   .back:hover{color:var(--text)}
-  .display{font-family:var(--font-sans);font-weight:500;font-size:clamp(48px,7.4vw,92px);line-height:1;letter-spacing:-0.045em}
-  .pill{display:inline-flex;align-items:center;gap:var(--space-2);padding:var(--space-2) var(--space-4);border-radius:var(--radius-3);background:var(--surface);color:var(--text-muted);font-weight:600;letter-spacing:.04em;text-transform:uppercase}
-  .pill--on{background:var(--accent);color:var(--on-accent);text-transform:none;letter-spacing:0}
+  .pill{display:inline-flex;align-items:center;gap:var(--space-2);padding:var(--space-2) var(--space-4);border-radius:var(--radius-3);background:var(--surface);color:var(--text-muted);font-weight:600}
+  .pill--on{background:var(--accent);color:var(--on-accent)}
   .pill svg{width:14px;height:14px}
-  .label{color:var(--text-muted);font-weight:500;letter-spacing:.08em;text-transform:uppercase;margin-bottom:var(--space-4)}
-
+  .label{margin-bottom:var(--space-4)}
   .card{background:var(--surface);border-radius:var(--radius-6);padding:var(--space-6);display:flex;flex-direction:column;gap:var(--space-5)}
 
-  /* Page layout: content on the left, order summary collects in a sticky sidebar on the right */
+  /* Page layout: mode toggle, mode panel and items on the left; the order collects in a sticky sidebar on the right */
   .layout{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--space-6);align-items:start}
-  .content{display:flex;flex-direction:column;gap:var(--space-7);min-width:0}
+  .content{display:flex;flex-direction:column;gap:var(--space-6);min-width:0}
   @media (min-width:1100px){
-    .layout{grid-template-columns:minmax(0,1fr) var(--side-w)}
+    .layout{grid-template-columns:minmax(0,1fr) 400px}
     .side{position:sticky;top:var(--space-5)}
-    .side .card{max-height:calc(100vh - 140px);overflow:auto}
+    .side .card{max-height:calc(100vh - 100px);overflow:auto}
   }
+  .modebar{display:flex;align-items:center;gap:var(--space-4);flex-wrap:wrap}
+  .modebar .pdg-segmented__opt svg{width:18px;height:18px}
 
   /* Banners */
-  #banners{display:flex;flex-direction:column;gap:var(--space-3)}
-  #banners:empty{display:none}
+  .banners{display:flex;flex-direction:column;gap:var(--space-3)}
+  .banners:empty{display:none}
   .banner{display:flex;gap:var(--space-3);align-items:flex-start;padding:var(--space-3) var(--space-4);background:var(--surface);border-radius:var(--radius-3);border:var(--border-width) solid currentColor}
   .banner svg{width:16px;height:16px;flex:none;margin-top:2px}
   .banner p{color:var(--text)}
@@ -81,7 +54,7 @@
   .banner--error{color:var(--error)}
   .banner--info{color:var(--text-muted)}
 
-  /* Spot map */
+  /* To table: spot map */
   .loc{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--space-5)}
   @media (min-width:800px){.loc{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);align-items:start}}
   .loc__info{display:flex;flex-direction:column;gap:var(--space-5)}
@@ -93,22 +66,21 @@
   .map.is-locked{cursor:default}
   .f{position:absolute;background:var(--surface);border-radius:var(--radius-3);pointer-events:none}
   .f--round{border-radius:var(--radius-full)}
-  .f--zone{background:transparent;border:var(--border-width) dashed #BDBDBD;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--text-muted);padding:var(--space-1)}
-  .map__wall{position:absolute;left:0;right:0;border-top:2px solid #BDBDBD;pointer-events:none}
+  .f--zone{background:transparent;border:var(--border-width) dashed var(--border-strong);display:flex;align-items:center;justify-content:center;text-align:center;color:var(--text-muted);padding:var(--space-1)}
+  .map__wall{position:absolute;left:0;right:0;border-top:2px solid var(--border-strong);pointer-events:none}
   .map__tag{position:absolute;color:var(--text-muted);pointer-events:none}
   .sq{position:absolute;background:var(--accent);border-radius:var(--radius-1);pointer-events:none;outline:2px solid var(--on-accent)}
   .sq--bad{background:#F6D3D3;outline-color:var(--error)}
   .who{position:absolute;transform:translate(-50%,-50%);width:28px;height:28px;border-radius:var(--radius-full);display:flex;align-items:center;justify-content:center;font-weight:700;pointer-events:none;border:2px solid var(--surface)}
   .who--sam{background:#8C7BE0;color:#fff}
   .spot{display:flex;justify-content:space-between;align-items:center;gap:var(--space-4);flex-wrap:wrap}
-  .words{font-family:var(--font-sans);font-weight:600;font-size:24px;line-height:32px;letter-spacing:-0.01em;word-break:break-word}
+  .words{font-weight:600;font-size:24px;line-height:32px;letter-spacing:-0.01em;word-break:break-word}
   .words span{color:var(--text-muted);font-weight:500}
   .spotform{display:flex;gap:var(--space-3);align-items:flex-end;flex-wrap:wrap}
   .spotform .pdg-field{min-width:200px}
   .host{display:flex;align-items:center;gap:var(--space-4);justify-content:space-between;flex-wrap:wrap}
   .host__who{display:flex;align-items:center;gap:var(--space-4)}
-  .avatar{width:56px;height:56px;border-radius:var(--radius-full);display:flex;align-items:center;justify-content:center;flex:none;font-weight:700}
-  .avatar--host{background:linear-gradient(135deg,#B9A7F5,#6F8BE8);color:#fff}
+  .avatar{width:56px;height:56px;border-radius:var(--radius-full);display:flex;align-items:center;justify-content:center;flex:none;font-weight:700;background:linear-gradient(135deg,#B9A7F5,#6F8BE8);color:#fff}
   .choices{display:flex;flex-direction:column;gap:var(--space-2);border:0;margin:0;padding:0}
   .choices legend{padding:0;margin-bottom:var(--space-2);font-weight:600}
   .choice{display:flex;gap:var(--space-3);align-items:flex-start;padding:var(--space-3) var(--space-4);border-radius:var(--radius-3);background:var(--background);cursor:pointer;border:var(--border-width) solid transparent}
@@ -116,10 +88,16 @@
   .choice input{margin:4px 0 0;accent-color:var(--text)}
   .choice span{display:flex;flex-direction:column}
 
-  /* Menu */
+  /* Pickup: time windows */
+  .slots{display:flex;gap:var(--space-2);flex-wrap:wrap}
+  .slots .pdg-chip{background:var(--background)}
+  .slots .pdg-chip[aria-checked="true"]{background:var(--accent)}
+  .slot-eta{font-weight:500;opacity:.8}
+  .counter-note{display:flex;gap:var(--space-3);align-items:flex-start;padding:var(--space-4);border-radius:var(--radius-3);background:var(--background)}
+  .counter-note svg{width:20px;height:20px;flex:none;margin-top:2px}
+
+  /* Items */
   .chips{display:flex;gap:var(--space-2);flex-wrap:wrap;margin-bottom:var(--space-4)}
-  .chip{border:0;background:var(--surface);color:var(--text);padding:var(--space-2) var(--space-4);border-radius:var(--radius-full);font-weight:600;cursor:pointer}
-  .chip[aria-pressed="true"]{background:var(--accent);color:var(--on-accent)}
   .menu{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:var(--space-4)}
   .dish{position:relative;border-radius:var(--radius-6);padding:var(--space-5);min-height:300px;display:flex;flex-direction:column;justify-content:space-between;gap:var(--space-5);background:linear-gradient(180deg,var(--surface) 30%,var(--tint) 100%)}
   .dish__quote{font-size:20px;line-height:28px;font-weight:500;letter-spacing:-0.01em}
@@ -131,17 +109,21 @@
   .tag{display:inline-flex;align-items:center;gap:var(--space-1);padding:2px var(--space-2);border-radius:var(--radius-full);background:rgba(0,0,0,.06);font-weight:600}
   .tag--in{background:var(--accent);color:var(--on-accent)}
   .dish--off{opacity:.6}
-  .round{width:40px;height:40px;padding:0;border-radius:var(--radius-full);flex:none}
+  .round{width:40px;height:40px;padding:0;flex:none}
   .qty{display:inline-flex;align-items:center;gap:var(--space-1);background:var(--surface);border-radius:var(--radius-full);padding:2px}
   .qty .pdg-btn{width:32px;min-height:32px;padding:0;border:0}
   .qty output{min-width:18px;text-align:center;font-weight:600}
+  .allergy{display:flex;gap:var(--space-3);align-items:flex-start;color:var(--text-muted);margin-top:var(--space-5)}
+  .allergy svg{width:16px;height:16px;flex:none;margin-top:2px}
+  .allergy strong{color:var(--text)}
 
-  /* Sidebar order summary */
+  /* Sidebar order */
   .side .card{padding:var(--space-5);gap:var(--space-4)}
   .side__head{display:flex;justify-content:space-between;align-items:baseline;gap:var(--space-3)}
   .count{display:inline-flex;align-items:center;justify-content:center;min-width:28px;height:28px;padding:0 var(--space-2);border-radius:var(--radius-full);background:var(--accent);color:var(--on-accent);font-weight:700}
   .to{display:flex;align-items:center;gap:var(--space-2);padding:var(--space-3);border-radius:var(--radius-3);background:var(--background)}
   .to svg{width:16px;height:16px;flex:none}
+  .to span{flex:1}
   .lines{list-style:none;margin:0;padding:0}
   .line{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:var(--space-3);align-items:center;padding:var(--space-3) 0;border-bottom:var(--border-width) solid var(--border)}
   .line:last-child{border-bottom:0}
@@ -151,11 +133,12 @@
   @keyframes collate{0%{background:var(--accent)}100%{background:transparent}}
   .thumb{width:44px;height:44px;border-radius:var(--radius-full);flex:none;background:var(--surface-sunk);display:flex;align-items:center;justify-content:center;font-size:22px}
   .linkbtn{padding:0;border:0;background:none;color:var(--text);text-decoration:underline;text-underline-offset:3px;cursor:pointer;text-align:left;font-weight:600}
-  .milk-chip{display:inline-flex;align-items:center;gap:var(--space-1);padding:2px var(--space-2);border-radius:var(--radius-full);background:var(--background);border:var(--border-width) solid var(--border);cursor:pointer;font-weight:600;color:var(--text);width:max-content}
-  .milk-chip:hover{border-color:var(--text)}
+  .opt-chip{display:inline-flex;align-items:center;gap:var(--space-1);padding:2px var(--space-2);border-radius:var(--radius-full);background:var(--background);border:var(--border-width) solid var(--border);cursor:pointer;font-weight:600;color:var(--text);width:max-content;max-width:100%}
+  .opt-chip:hover{border-color:var(--text)}
   .extras summary{cursor:pointer;font-weight:600}
   .extras[open] summary{margin-bottom:var(--space-3)}
-  .extras .pdg-field{min-width:0;margin-bottom:var(--space-3)}
+  .side .pdg-field{min-width:0}
+  .stack{display:flex;flex-direction:column;gap:var(--space-3)}
   .paychips{display:flex;gap:var(--space-2);flex-wrap:wrap;border:0;margin:0;padding:0}
   .paychips legend{padding:0;margin-bottom:var(--space-2);font-weight:600}
   .paychip{display:inline-flex;align-items:center;gap:var(--space-2);padding:var(--space-2) var(--space-3);border-radius:var(--radius-full);background:var(--background);cursor:pointer;font-weight:600}
@@ -168,7 +151,7 @@
   .empty{display:flex;flex-direction:column;align-items:center;text-align:center;gap:var(--space-2);padding:var(--space-5) 0}
   .empty span{font-size:40px}
 
-  /* Status (in the sidebar) */
+  /* Status */
   .track{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
   .track li{display:grid;grid-template-columns:20px 1fr;gap:var(--space-3);padding-bottom:var(--space-4);position:relative}
   .track li:last-child{padding-bottom:0}
@@ -190,7 +173,7 @@
   }
 
   /* Dialogs */
-  .dialog{border:0;border-radius:var(--radius-6);padding:var(--space-6);width:min(480px,calc(100vw - 32px));background:var(--surface);color:var(--text)}
+  .dialog{border:0;border-radius:var(--radius-6);padding:var(--space-6);width:min(480px,calc(100vw - 32px));max-height:92dvh;background:var(--surface);color:var(--text)}
   .dialog::backdrop{background:rgba(22,22,22,.45)}
   .dialog__body{display:flex;flex-direction:column;gap:var(--space-4)}
   .dialog__actions{display:flex;gap:var(--space-2);flex-wrap:wrap;justify-content:center}
@@ -198,13 +181,14 @@
   .filebtn{position:relative;overflow:hidden}
   .filebtn input{position:absolute;inset:0;opacity:0;cursor:pointer}
 
-  /* Milk picker */
+  /* Milk & size picker */
   .milk-stage{position:relative;display:grid;grid-template-columns:44px 1fr 44px;align-items:center;gap:var(--space-2);border-radius:var(--radius-5);padding:var(--space-4) var(--space-2);background:var(--milk-bg,#F7F7F2);transition:background .35s ease}
   .milk-scene{position:relative;height:220px;display:flex;align-items:flex-end;justify-content:center;overflow:hidden}
   .milk-buddy{position:absolute;top:0;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center}
   .milk-buddy__face{width:84px;height:84px;border-radius:var(--radius-full);background:var(--surface);display:flex;align-items:center;justify-content:center;font-size:48px;box-shadow:0 4px 14px rgba(0,0,0,.08)}
   .milk-pour{width:10px;height:56px;border-radius:0 0 6px 6px;background:var(--milk);transform-origin:top;transform:scaleY(0)}
-  .milk-cup{width:120px;height:120px;position:relative}
+  .milk-cup{width:112px;height:112px;position:relative;transition:width .3s ease,height .3s ease}
+  .milk-cup.is-large{width:136px;height:136px}
   .milk-cup svg{width:100%;height:100%;overflow:visible}
   .milk-layer{transition:fill .35s ease}
   .in-left .milk-buddy__face{animation:inLeft .45s cubic-bezier(.2,1.4,.4,1)}
@@ -215,13 +199,15 @@
   @keyframes inRight{0%{transform:translateX(140px) rotate(30deg);opacity:0}100%{transform:none;opacity:1}}
   @keyframes pour{0%{transform:scaleY(0)}35%,65%{transform:scaleY(1)}100%{transform:scaleY(0);transform-origin:bottom}}
   @keyframes slosh{0%,100%{transform:rotate(0)}40%{transform:rotate(-3deg)}70%{transform:rotate(2deg)}}
-  .milk-arrow{width:44px;height:44px;padding:0;border-radius:var(--radius-full)}
+  .milk-arrow{width:44px;height:44px;padding:0}
   .milk-name{text-align:center;display:flex;flex-direction:column;gap:var(--space-1)}
-  .milk-opts{display:flex;gap:var(--space-2);justify-content:center;flex-wrap:wrap;border:0;margin:0;padding:0}
+  .milk-opts{display:flex;gap:var(--space-2);justify-content:center;flex-wrap:wrap}
   .milk-opt{display:flex;flex-direction:column;align-items:center;gap:2px;width:64px;padding:var(--space-2) 0;border-radius:var(--radius-3);border:var(--border-width) solid transparent;background:var(--background);cursor:pointer;font-weight:600;color:var(--text)}
   .milk-opt span{font-size:24px;line-height:28px}
   .milk-opt[aria-checked="true"]{background:var(--accent);color:var(--on-accent);border-color:var(--on-accent)}
-  @media (prefers-reduced-motion:reduce){.in-left .milk-buddy__face,.in-right .milk-buddy__face,.pouring .milk-pour,.pouring .milk-cup,.line--new{animation:none}}
+  .size-row{display:flex;justify-content:space-between;align-items:center;gap:var(--space-3);flex-wrap:wrap}
+  .size-row .pdg-segmented__opt{min-height:36px;padding:0 var(--space-4)}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.in-left .milk-buddy__face,.in-right .milk-buddy__face,.pouring .milk-pour,.pouring .milk-cup,.line--new{animation:none}.milk-cup{transition:none}}
 
   /* Coffee buddy dock (the pop-out window reuses BUDDY_CSS from the script) */
   .buddy-dock{position:fixed;left:var(--space-4);bottom:var(--space-4);z-index:30}
@@ -231,7 +217,7 @@
   .proto{position:fixed;right:var(--space-4);bottom:var(--space-4);z-index:20;max-width:320px}
   .proto summary{list-style:none;cursor:pointer;margin-left:auto;width:max-content}
   .proto summary::-webkit-details-marker{display:none}
-  .proto__panel{margin-top:var(--space-2);padding:var(--space-4);gap:var(--space-3);border:var(--border-width) dashed #BDBDBD}
+  .proto__panel{margin-top:var(--space-2);padding:var(--space-4);gap:var(--space-3);border:var(--border-width) dashed var(--border-strong);border-radius:var(--radius-5)}
   .proto__panel label{display:flex;gap:var(--space-2);align-items:flex-start;cursor:pointer}
   .proto__panel input{margin-top:3px;accent-color:var(--text)}
   .proto__panel .pdg-btn{width:100%}
@@ -239,16 +225,15 @@
 </style>
 </head>
 <body>
+<a class="skip caption" href="#items">Skip to the menu</a>
 <main class="wrap">
   <header class="top">
     <div class="top__title">
       <a class="caption back" href="../">← Product Designer Gym Cafe</a>
       <h1 class="display">Corgi Cafe</h1>
     </div>
-    <span class="caption pill" id="spotPill" aria-live="polite"></span>
+    <span class="caption pill" id="pill" aria-live="polite"></span>
   </header>
-
-  <div id="banners"></div>
   <div id="main"></div>
 </main>
 
@@ -275,9 +260,10 @@
 <details class="proto" id="proto">
   <summary class="caption pdg-btn pdg-btn--secondary">Prototype scenarios</summary>
   <div class="card proto__panel">
-    <p class="caption muted">For show and tell only. Toggle cases to see how the flow responds.</p>
+    <p class="caption muted">For show and tell only. Sample café time: Monday 10:20. No real orders or payments.</p>
+    <label class="caption"><input type="checkbox" data-scenario="busy"> Busy café (longer waits)</label>
     <label class="caption"><input type="checkbox" data-scenario="kitchenClosing"> Kitchen closes in 15 min</label>
-    <label class="caption"><input type="checkbox" data-scenario="closed"> Table ordering is closed</label>
+    <label class="caption"><input type="checkbox" data-scenario="closed"> Closed today</label>
     <label class="caption"><input type="checkbox" data-scenario="soldOutOnSubmit"> An item sells out at checkout</label>
     <button class="caption pdg-btn pdg-btn--secondary" data-action="qr">Scan the spot sticker on a table</button>
     <button class="caption pdg-btn pdg-btn--secondary" data-action="advance">Advance order status</button>
@@ -285,7 +271,7 @@
   </div>
 </details>
 
-<footer class="caption">© Corgi Cafe at Product Designer Gym</footer>
+<footer class="caption">© Corgi Cafe at Product Designer Gym · <a href="../../design-system/">Built with our design system</a></footer>
 
 <script>
 // ---------- Icons ----------
@@ -295,12 +281,14 @@ const ICON = {
   alert: '<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 1.6l4.6 8.4H1.4z"/><path d="M6 5v2.2M6 8.6v.1"/></svg>',
   info: '<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><circle cx="6" cy="6" r="4.6"/><path d="M6 5.4v3M6 3.6v.1"/></svg>',
   pin: '<svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M7 12.5s4-3.6 4-6.8a4 4 0 10-8 0c0 3.2 4 6.8 4 6.8z"/><circle cx="7" cy="5.7" r="1.4"/></svg>',
+  bag: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M3 5.5h10l-.8 8.5H3.8z"/><path d="M5.8 7V4.5a2.2 2.2 0 014.4 0V7" stroke-linecap="round"/></svg>',
+  table: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M2 6h12M4 6v7M12 6v7M6.5 3.5c0-1 .8-1.5 1.5-1.5s1.5.5 1.5 1.5"/></svg>',
   dot: '<svg viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="2.4" fill="currentColor"/></svg>',
   left: '<svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3L5 8l5 5"/></svg>',
   right: '<svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3l5 5-5 5"/></svg>'
 };
 
-// ---------- Spots: the floor is a 24 × 18 grid of ~1m squares, each with a three-word name ----------
+// ---------- To table: the floor is a 24 × 18 grid of ~1m squares, each with a three-word name ----------
 const COLS = 24, ROWS = 18;
 const W1 = ['crema','velvet','roast','pour','steam','foam','bean','drip','grind','brew','latte','mocha'];
 const W2 = ['maple','cloud','ember','honey','pebble','meadow','copper','linen','cedar','river','amber','willow'];
@@ -317,7 +305,7 @@ const inRect = (s, c0, r0, c1, r1) => s.c >= c0 && s.c <= c1 && s.r >= r0 && s.r
 function spotProblem(s){
   if (inRect(s, 19, 0, 23, 9)) return 'That square is behind the counter. Tap where you\'re sitting.';
   if (inRect(s, 19, 11, 23, 13)) return 'That\'s the doorway. Tap where you\'re sitting.';
-  if (s.r >= 15) return 'That\'s the patio. We can\'t bring orders outside yet, so please order at the counter.';
+  if (s.r >= 15) return 'That\'s the patio. We can\'t bring orders outside yet. Switch to Pickup and collect from the counter.';
   return '';
 }
 const zoneOf = s => s.r <= 4 ? 'by the window' : s.r <= 9 ? 'on the main floor' : 'at the long table';
@@ -333,16 +321,20 @@ const SAM = {c:9, r:8, name:'Sam', items:2, mins:6};
 const EXAMPLE = wordsFor(14, 7); // the spot printed on the sticker at the middle table
 const near = (a, b) => Math.max(Math.abs(a.c - b.c), Math.abs(a.r - b.r)) <= 2;
 
+// ---------- Pickup: sample windows, relative to a sample café time of Monday 10:20 ----------
+const SLOTS_TODAY = ['Today · 11:00–11:15', 'Today · 11:30–11:45', 'Today · 12:00–12:15', 'Tomorrow · 7:45–8:00'];
+const SLOTS_TOMORROW = ['Tomorrow · 7:45–8:00', 'Tomorrow · 8:00–8:15', 'Tomorrow · 8:15–8:30'];
+
 // ---------- Menu ----------
 const MENU = [
   {cat:'Coffee', tint:'--tint-coffee', items:[
     {id:'espresso', emoji:'☕', name:'Espresso', price:3.20, quote:'A short, sharp double shot pulled from our signature roast.'},
-    {id:'flat', emoji:'☕', name:'Flat White', price:4.50, quote:'Double ristretto under a thin, silky layer of microfoam.', foam:true, milk:true},
-    {id:'capp', emoji:'☕', name:'Cappuccino', price:4.80, quote:'Equal parts espresso, milk and cloud-like foam.', foam:true, milk:true},
-    {id:'latte', emoji:'🥛', name:'Latte', price:4.80, quote:'Our signature roast, balanced with the milk of your choice and a touch of agave.', foam:true, milk:true}
+    {id:'flat', emoji:'☕', name:'Flat White', price:4.50, quote:'Double ristretto under a thin, silky layer of microfoam.', foam:true, milk:true, allergens:'Contains milk unless you pick a plant milk.'},
+    {id:'capp', emoji:'☕', name:'Cappuccino', price:4.80, quote:'Equal parts espresso, milk and cloud-like foam.', foam:true, milk:true, allergens:'Contains milk unless you pick a plant milk.'},
+    {id:'latte', emoji:'🥛', name:'Latte', price:4.80, quote:'Our signature roast, balanced with the milk of your choice and a touch of agave.', foam:true, milk:true, allergens:'Contains milk unless you pick a plant milk.'}
   ]},
   {cat:'Cold', tint:'--tint-cold', items:[
-    {id:'matcha', emoji:'🍵', name:'Iced Matcha Latte', price:5.20, quote:'First-harvest ceremonial grade matcha, whisked and poured over ice.', milk:true, base:'#7FA650'},
+    {id:'matcha', emoji:'🍵', name:'Iced Matcha Latte', price:5.20, quote:'First-harvest ceremonial grade matcha, whisked and poured over ice.', milk:true, base:'#7FA650', allergens:'Contains milk unless you pick a plant milk.'},
     {id:'coldbrew', emoji:'🧊', name:'Cold Brew Set', price:5.00, quote:'Steeped for 18 hours and served over one big, slow cube.'},
     {id:'sparkling', emoji:'🫧', name:'Sparkling Water', price:3.00, quote:'Chilled and bright, with a slice of lemon.'}
   ]},
@@ -353,6 +345,7 @@ const MENU = [
   ]},
   {cat:'Bakes', tint:'--tint-bakes', items:[
     {id:'croissant', emoji:'🥐', name:'Pistachio Croissant', price:5.75, quote:'Twice-baked with house-made pistachio frangipane and crushed nuts.'},
+    {id:'pastry', emoji:'🧁', name:'Pastry Pass', price:3.80, quote:'Whatever came out of the oven this morning. Ask the counter.'},
     {id:'banana', emoji:'🍌', name:'Banana Bread', price:4.00, quote:'Toasted thick and served with salted butter.'},
     {id:'cookie', emoji:'🍪', name:'Cookie', price:3.00, quote:'Brown butter, dark chocolate, flaky salt.'}
   ]}
@@ -361,117 +354,171 @@ const ITEMS = Object.fromEntries(MENU.flatMap(c => c.items.map(i => [i.id, {...i
 
 // Milk options for the picker. `color` fills the cup, `bg` tints the stage.
 const MILKS = [
-  {id:'cow',     emoji:'🐄', name:'Cow',     full:'Whole milk',   note:'Creamy, classic and foams like a dream.', extra:0,   color:'#FFFFFF', bg:'#F2F6FF'},
-  {id:'oat',     emoji:'🌾', name:'Oat',     full:'Oat milk',     note:'Toasty, naturally sweet, our barista favourite.', extra:0.70, color:'#EAD9B8', bg:'#FBF3E2'},
-  {id:'almond',  emoji:'🌰', name:'Almond',  full:'Almond milk',  note:'Light and nutty with a delicate finish.', extra:0.70, color:'#F1E2CF', bg:'#F8EEE6'},
-  {id:'soy',     emoji:'🫘', name:'Soy',     full:'Soy milk',     note:'Smooth, rich and the original alt-milk.', extra:0.70, color:'#F5EDD2', bg:'#F7F5E4'},
-  {id:'coconut', emoji:'🥥', name:'Coconut', full:'Coconut milk', note:'Silky and tropical. Holiday in a cup.', extra:0.70, color:'#FBFAF4', bg:'#EAF7F1'}
+  {id:'cow',     emoji:'🐄', name:'Cow',     full:'Whole milk',   note:'Creamy, classic and foams like a dream.', extra:0,    color:'#FFFFFF', bg:'#F2F6FF'},
+  {id:'oat',     emoji:'🌾', name:'Oat',     full:'Oat milk',     note:'Toasty, naturally sweet, our barista favourite.', extra:0.60, color:'#EAD9B8', bg:'#FBF3E2'},
+  {id:'almond',  emoji:'🌰', name:'Almond',  full:'Almond milk',  note:'Light and nutty with a delicate finish.', extra:0.60, color:'#F1E2CF', bg:'#F8EEE6'},
+  {id:'soy',     emoji:'🫘', name:'Soy',     full:'Soy milk',     note:'Smooth, rich and the original alt-milk.', extra:0.60, color:'#F5EDD2', bg:'#F7F5E4'},
+  {id:'coconut', emoji:'🥥', name:'Coconut', full:'Coconut milk', note:'Silky and tropical. Holiday in a cup.', extra:0.60, color:'#FBFAF4', bg:'#EAF7F1'}
 ];
 const MILK = Object.fromEntries(MILKS.map(m => [m.id, m]));
+const LARGE_EXTRA = 0.80;
 
-const TRACK = [
-  {title:'Received', note:'The bar has your order.', buddy:'Got it! Order #{n} is in the queue.'},
-  {title:'Being made', note:'Drinks first, food follows.', buddy:'Being made… about {eta} min.'},
-  {title:'On its way', note:'Look out for Victoria heading your way.', buddy:'On my way to {spot}!'},
-  {title:'At your spot', note:'Enjoy. Need anything else? Order another round.', buddy:'I\'m here. Enjoy!'}
-];
+// Each mode tracks the order through its own steps. The buddy reads `buddy`.
+const TRACKS = {
+  table: [
+    {title:'Received', note:'The bar has your order.', buddy:'Got it! Order #{n} is in the queue.'},
+    {title:'Being made', note:'Drinks first, food follows.', buddy:'Being made… about {eta} min.'},
+    {title:'On its way', note:'Look out for Victoria heading your way.', buddy:'On my way to {where}!'},
+    {title:'At your spot', note:'Enjoy. Need anything else? Order another round.', buddy:'I\'m here. Enjoy!'}
+  ],
+  pickup: [
+    {title:'Received', note:'You can still cancel until we start.', buddy:'Got it! Order #{n} is in the queue.'},
+    {title:'Preparing', note:'We\'re making it now.', buddy:'Being made… ready in about {eta} min.'},
+    {title:'Ready for pickup', note:'Collect from the counter. Give your name and order number.', buddy:'Ready at the counter, {name}!'}
+  ]
+};
 const STEP_MS = 15000; // auto-advance the simulated order
 
 // ---------- State ----------
-// The cart is keyed by line: "itemId|milkId" (milk is empty for items without milk)
+// The cart is shared by both modes and keyed by line: "itemId|milkId|size" (blank parts for items without options)
 const fresh = () => ({
-  spot:null, spotError:'', join:'join', filter:'All',
+  mode:'table',          // table | pickup — the toggle at the top
+  spot:null, spotError:'', join:'join',
+  slot:'asap',           // pickup: 'asap' or a window label
+  filter:'All',
   cart:{},               // lineKey -> qty
   portraits:{},          // lineKey -> PNG data URL of the cocoa stencil preview
-  name:'', notes:'', pay:'now',
-  soldNow:null,          // item id that sold out at checkout
+  name:'', email:'', notes:'', pay:'now', nameError:false,
+  soldNow:null,
   order:null,
-  moving:false, notice:'', lastAdded:null, buddyHidden:false
+  moving:false, notice:'', confirmCancel:false, lastAdded:null, buddyHidden:false
 });
 let state = fresh();
-const scenario = {kitchenClosing:false, closed:false, soldOutOnSubmit:false};
+const scenario = {busy:false, kitchenClosing:false, closed:false, soldOutOnSubmit:false};
 let timer = null;
 
 // ---------- Helpers ----------
 const $ = s => document.querySelector(s);
 const money = n => '$' + n.toFixed(2);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const keyOf = (id, milk) => `${id}|${milk || ''}`;
+const keyOf = (id, milk = '', size = '') => `${id}|${milk}|${size}`;
 const lineOf = (key, qty) => {
-  const [id, milk] = key.split('|');
-  const it = ITEMS[id], m = MILK[milk];
-  return {...it, key, milk:m || null, qty, unit:it.price + (m ? m.extra : 0)};
+  const [id, milk, size] = key.split('|');
+  const it = ITEMS[id], m = MILK[milk] || null, large = size === 'large';
+  return {...it, key, milk:m, large, qty, unit:it.price + (m ? m.extra : 0) + (large ? LARGE_EXTRA : 0)};
 };
+const optsLabel = l => [l.large ? 'Large' : (l.milk ? 'Regular' : ''), l.milk ? l.milk.full : ''].filter(Boolean).join(' · ');
 const cartLines = () => Object.entries(state.cart).filter(([,q]) => q > 0).map(([k,q]) => lineOf(k, q));
 const cartCount = () => cartLines().reduce((n,l) => n + l.qty, 0);
 const cartTotal = () => cartLines().reduce((n,l) => n + l.qty * l.unit, 0);
 const countOf = id => cartLines().filter(l => l.id === id).reduce((n,l) => n + l.qty, 0);
 const unavailable = it => it.soldOut || it.id === state.soldNow;
 const spotOk = () => state.spot && !spotProblem(state.spot);
-const joined = () => !!(spotOk() && near(state.spot, SAM) && state.join === 'join');
+const joined = () => !!(state.mode === 'table' && spotOk() && near(state.spot, SAM) && state.join === 'join');
 const wordsHtml = w => w.split('.').map(esc).join('<span>.</span>');
 const badge = (kind, icon, word) => `<span class="small pdg-badge pdg-badge--${kind}">${ICON[icon]}${word}</span>`;
-function addLine(key, n = 1){
-  state.cart[key] = (state.cart[key] || 0) + n;
-  state.lastAdded = key;
+const pickupEta = () => scenario.busy ? '25–30 min' : '10–15 min';
+const slots = () => scenario.closed ? SLOTS_TOMORROW : SLOTS_TODAY;
+const slotLabel = () => state.slot === 'asap' ? `Today · in ${pickupEta()}` : state.slot;
+const tableClosed = () => scenario.closed;
+function addLine(key, n = 1){ state.cart[key] = (state.cart[key] || 0) + n; state.lastAdded = key; }
+
+// The bag survives refreshes and mode switches. Contact details and photos are never stored.
+const STORE = 'corgi-cafe-v1';
+function save(){
+  try { localStorage.setItem(STORE, JSON.stringify({mode:state.mode, cart:state.cart, spot:state.spot, slot:state.slot})); } catch {}
+}
+function load(){
+  try {
+    const d = JSON.parse(localStorage.getItem(STORE) || 'null');
+    if (!d) return;
+    if (d.mode === 'table' || d.mode === 'pickup') state.mode = d.mode;
+    for (const [k, q] of Object.entries(d.cart || {})){
+      const [id, milk, size] = String(k).split('|');
+      if (ITEMS[id] && (!milk || MILK[milk]) && ['', 'regular', 'large'].includes(size ?? '') && Number.isInteger(q) && q > 0 && q <= 20) state.cart[k] = q;
+    }
+    if (d.spot && Number.isInteger(d.spot.c) && Number.isInteger(d.spot.r) && d.spot.c >= 0 && d.spot.c < COLS && d.spot.r >= 0 && d.spot.r < ROWS) state.spot = d.spot;
+    if (d.slot === 'asap' || SLOTS_TODAY.includes(d.slot)) state.slot = d.slot;
+  } catch {}
 }
 
 // ---------- Render ----------
 function render(){
   const focusKey = document.activeElement && document.activeElement.dataset.key;
   renderPill();
-  renderBanners();
-  $('#main').innerHTML = scenario.closed && !state.order ? viewClosed() : `
+  const pickup = state.mode === 'pickup';
+  $('#main').innerHTML = `
     <div class="layout">
       <div class="content">
-        <section aria-labelledby="locLabel"><h2 class="caption label" id="locLabel">Your location</h2>${viewLocation()}</section>
-        <section aria-labelledby="menuLabel"><h2 class="caption label" id="menuLabel">Browse menu</h2>${viewMenu()}</section>
+        <div class="modebar">
+          <div class="pdg-segmented" role="group" aria-label="How do you want your order?">
+            <button class="body pdg-segmented__opt" data-action="mode" data-mode="pickup" data-key="mode-pickup" aria-pressed="${pickup}">${ICON.bag}Pickup</button>
+            <button class="body pdg-segmented__opt" data-action="mode" data-mode="table" data-key="mode-table" aria-pressed="${!pickup}">${ICON.table}To table</button>
+          </div>
+          <p class="caption muted">${pickup ? 'Order ahead, grab it from the counter.' : 'Already here? We\'ll bring it to you.'}</p>
+        </div>
+        <div class="banners">${viewBanners()}</div>
+        <section aria-labelledby="modeLabel"><h2 class="label" id="modeLabel">${pickup ? 'Pickup time' : 'Your location'}</h2>${pickup ? viewPickup() : viewLocation()}</section>
+        <section id="items" aria-labelledby="menuLabel"><h2 class="label" id="menuLabel">Browse menu</h2>${viewMenu()}</section>
       </div>
       <aside class="side" id="side" aria-labelledby="sumLabel">
-        <h2 class="caption label" id="sumLabel">${state.order ? 'Your order' : 'Order summary'}</h2>
+        <h2 class="label" id="sumLabel">${state.order ? 'Your order' : 'Order summary'}</h2>
         ${state.order ? viewStatus() : viewSummary()}
       </aside>
     </div>`;
   renderMobileBar();
   renderBuddy();
+  save();
   state.lastAdded = null; // only flash a line once
   if (focusKey){ const el = document.querySelector(`[data-key="${focusKey}"]`); if (el) el.focus(); }
 }
 
 function renderPill(){
-  const p = $('#spotPill');
-  const s = state.order && !state.moving ? state.order.spot : state.spot;
-  if (s && !spotProblem(s)){ p.className = 'caption pill pill--on'; p.innerHTML = `${ICON.pin}${wordsFor(s.c, s.r)}`; }
-  else { p.className = 'caption pill'; p.textContent = 'No spot yet'; }
+  const p = $('#pill');
+  const o = state.order;
+  if (o && !state.moving && o.mode === 'table'){ p.className = 'caption pill pill--on'; p.innerHTML = `${ICON.pin}${wordsFor(o.spot.c, o.spot.r)}`; return; }
+  if (o && o.mode === 'pickup'){ p.className = 'caption pill pill--on'; p.innerHTML = `${ICON.clock}Pickup #${o.number}`; return; }
+  if (state.mode === 'pickup'){ p.className = 'caption pill pill--on'; p.innerHTML = `${ICON.clock}${esc(slotLabel())}`; return; }
+  if (spotOk()){ p.className = 'caption pill pill--on'; p.innerHTML = `${ICON.pin}${wordsFor(state.spot.c, state.spot.r)}`; return; }
+  p.className = 'caption pill'; p.textContent = 'No spot yet';
 }
 
-function renderBanners(){
+function viewBanners(){
   const out = [];
-  if (scenario.kitchenClosing && !scenario.closed && !state.order)
+  if (state.order) return '';
+  if (scenario.closed && state.mode === 'pickup')
+    out.push(`<div class="banner banner--warning" role="status">${ICON.clock}<p class="caption"><strong>Today's pickup has closed.</strong> You can still schedule an order for tomorrow, from 7:45.</p></div>`);
+  if (scenario.busy && !scenario.closed)
+    out.push(`<div class="banner banner--warning" role="status">${ICON.clock}<p class="caption"><strong>A little busier than usual.</strong> ${state.mode === 'pickup' ? 'Allow 25–30 minutes for pickup now.' : 'Orders to your spot are taking about 10 minutes longer.'}</p></div>`);
+  if (scenario.kitchenClosing && !scenario.closed)
     out.push(`<div class="banner banner--warning" role="status">${ICON.alert}<p class="caption"><strong>Kitchen closes in 15 minutes.</strong> Last food orders by 17:45. Drinks and bakes until 18:00.</p></div>`);
-  $('#banners').innerHTML = out.join('');
+  return out.join('');
 }
 
-function renderMobileBar(){
-  const show = !state.order && !scenario.closed && cartCount() > 0;
-  document.body.classList.toggle('has-bar', show);
-  $('#mobilebar').innerHTML = show ? `
-    <span class="body"><strong>${cartCount()} item${cartCount() === 1 ? '' : 's'}</strong> · ${money(cartTotal())}</span>
-    <button class="body pdg-btn pdg-btn--primary" data-action="toSide">View order</button>` : '';
-}
-
-function viewClosed(){
-  return `<div class="card" style="max-width:640px">
-    <h2 class="h2">Table ordering is closed right now</h2>
-    <p class="body muted">We take orders to your spot during opening hours.</p>
-    <p class="body">Mon–Fri 7:30–18:00<br>Sat–Sun 9:00–16:00</p>
-    <div><a class="body pdg-btn pdg-btn--secondary" href="../#menu">See the menu</a></div>
+function viewPickup(){
+  const list = slots();
+  const asap = !scenario.closed;
+  const chip = (val, label, extra = '') => `<button class="caption pdg-chip" role="radio" data-action="slot" data-slot="${esc(val)}" data-key="slot-${esc(val)}" aria-checked="${state.slot === val}">${label}${extra}</button>`;
+  return `
+  <div class="card">
+    <div><h3 class="h3">When are you stopping by?</h3><p class="caption muted">Windows are in café time. Sample availability for this prototype.</p></div>
+    <div class="slots" role="radiogroup" aria-label="Pickup time">
+      ${asap ? chip('asap', 'As soon as possible', ` <span class="slot-eta">· ${pickupEta()}</span>`) : ''}
+      ${list.map(s => chip(s, esc(s))).join('')}
+    </div>
+    <div class="counter-note">${ICON.bag}<p class="caption"><strong>Collect from the counter by the door.</strong><br><span class="muted">Give your name and order number to the team. Mon–Fri 7:30–18:00 · Sat–Sun 9:00–16:00. Last pickup is 15 minutes before closing.</span></p></div>
   </div>`;
 }
 
 function viewLocation(){
+  if (tableClosed() && !(state.order && state.order.mode === 'table')) return `
+    <div class="card">
+      <h3 class="h3">Table ordering is closed right now</h3>
+      <p class="body muted">We bring orders to your spot during opening hours. You can still schedule a pickup for tomorrow.</p>
+      <div><button class="body pdg-btn pdg-btn--primary" data-action="mode" data-mode="pickup">Switch to pickup</button></div>
+    </div>`;
   const s = state.spot;
-  const locked = state.order && !state.moving;
+  const locked = state.order && state.order.mode === 'table' && !state.moving;
   const pct = (v, n) => (v / n * 100).toFixed(3) + '%';
   const box = (c, r, w, h) => `left:${pct(c, COLS)};top:${pct(r, ROWS)};width:${pct(w, COLS)};height:${pct(h, ROWS)}`;
   const furniture = FURNITURE.map(f => `<span class="f ${f.round ? 'f--round' : ''}" style="${box(f.c + .15, f.r + .15, f.w - .3, f.h - .3)}"></span>`).join('');
@@ -536,7 +583,7 @@ function viewLocation(){
           <button class="body pdg-btn pdg-btn--secondary" type="submit">Find spot</button>
         </form>`}
         <div class="host">
-          <div class="host__who"><span class="avatar avatar--host body" aria-hidden="true">VP</span>
+          <div class="host__who"><span class="avatar body" aria-hidden="true">VP</span>
             <div><p class="body" style="font-weight:600">Victoria P.</p><p class="caption muted">Your host today</p></div></div>
           <button class="caption pdg-btn pdg-btn--ghost" data-action="help">Ask Victoria</button>
         </div>
@@ -548,9 +595,10 @@ function viewLocation(){
 
 function viewMenu(){
   const cats = ['All', ...MENU.map(c => c.cat)];
-  const chips = `<div class="chips" role="group" aria-label="Filter menu">${cats.map(c => `<button class="caption chip" data-action="filter" data-cat="${c}" data-key="chip-${c}" aria-pressed="${state.filter === c}">${c}</button>`).join('')}</div>`;
+  const chips = `<div class="chips" role="group" aria-label="Filter menu">${cats.map(c => `<button class="caption pdg-chip" data-action="filter" data-cat="${c}" data-key="chip-${c}" aria-pressed="${state.filter === c}">${c}</button>`).join('')}</div>`;
   const items = Object.values(ITEMS).filter(i => state.filter === 'All' || i.cat === state.filter);
-  return chips + `<div class="menu">${items.map(viewDish).join('')}</div>`;
+  return chips + `<div class="menu">${items.map(viewDish).join('')}</div>
+    <div class="allergy caption">${ICON.info}<p><strong>Allergies or dietary needs?</strong> Speak to the team before ordering. We can't guarantee an allergen-free preparation area.</p></div>`;
 }
 
 function viewDish(it){
@@ -565,8 +613,8 @@ function viewDish(it){
   ].join('');
   let control = '';
   if (!off && state.order) control = `<button class="h4 pdg-btn pdg-btn--secondary round" data-action="again" data-id="${it.id}" aria-label="Add ${it.name} to a new order">+</button>`;
-  else if (!off && it.milk) control = `<button class="h4 pdg-btn pdg-btn--primary round" data-action="pickMilk" data-id="${it.id}" data-key="add-${it.id}" aria-label="Add ${it.name}, choose your milk">+</button>`;
-  else if (!off) {
+  else if (!off && it.milk) control = `<button class="h4 pdg-btn pdg-btn--primary round" data-action="pickMilk" data-id="${it.id}" data-key="add-${it.id}" aria-label="Add ${it.name}, choose milk and size">+</button>`;
+  else if (!off){
     const k = keyOf(it.id), q = state.cart[k] || 0;
     control = q ? qtyControl(k, it.name, q)
       : `<button class="h4 pdg-btn pdg-btn--primary round" data-action="inc" data-line="${k}" data-key="add-${it.id}" aria-label="Add ${it.name}">+</button>`;
@@ -586,27 +634,72 @@ function viewDish(it){
 }
 
 function qtyControl(key, name, q){
-  const k = key.replace('|', '_');
+  const k = key.replace(/\|/g, '_');
   return `<div class="qty" role="group" aria-label="${name} quantity">
     <button class="body pdg-btn pdg-btn--secondary" data-action="dec" data-line="${key}" data-key="dec-${k}" aria-label="Remove one ${name}">−</button>
     <output class="body">${q}</output>
-    <button class="body pdg-btn pdg-btn--secondary" data-action="inc" data-line="${key}" data-key="inc-${k}" aria-label="Add one more ${name}">+</button>
+    <button class="body pdg-btn pdg-btn--secondary" data-action="inc" data-line="${key}" data-key="inc-${k}" aria-label="Add one more ${name}" ${q >= 20 ? 'disabled' : ''}>+</button>
   </div>`;
 }
 
 function viewSummary(){
   const lines = cartLines();
+  const pickup = state.mode === 'pickup';
   const head = `<div class="side__head"><h3 class="h4">Your order</h3>${lines.length ? `<span class="caption count" aria-label="${cartCount()} items">${cartCount()}</span>` : ''}</div>`;
-  const to = spotOk()
-    ? `<div class="to caption">${ICON.pin}<span>To <strong>${wordsFor(state.spot.c, state.spot.r)}</strong>${joined() ? ` · with ${SAM.name}` : ''}</span></div>`
-    : `<div class="to caption muted">${ICON.pin}<span>Mark your spot on the map</span></div>`;
-  if (!lines.length) return `<div class="card">${head}${to}<div class="empty"><span aria-hidden="true">🐕</span><p class="body muted">Your order collects here. Tap + on anything in the menu.</p></div></div>`;
+  let to;
+  if (pickup) to = `<div class="to caption">${ICON.bag}<span>Pickup · <strong>${esc(slotLabel())}</strong></span><button class="small linkbtn" data-action="toMode">Change</button></div>`;
+  else if (tableClosed()) to = `<div class="to caption muted">${ICON.pin}<span>Table ordering is closed</span><button class="small linkbtn" data-action="mode" data-mode="pickup">Pickup instead</button></div>`;
+  else if (spotOk()) to = `<div class="to caption">${ICON.pin}<span>To <strong>${wordsFor(state.spot.c, state.spot.r)}</strong>${joined() ? ` · with ${SAM.name}` : ''}</span></div>`;
+  else to = `<div class="to caption muted">${ICON.pin}<span>Mark your spot on the map</span><button class="small linkbtn" data-action="toMode">Map</button></div>`;
+  if (!lines.length) return `<div class="card">${head}${to}<div class="empty"><span aria-hidden="true">🐕</span><p class="body muted">Your order collects here. Tap + on anything in the menu. It stays put if you switch between pickup and to table.</p></div></div>`;
 
   const sold = state.soldNow && countOf(state.soldNow) ? ITEMS[state.soldNow] : null;
   const blockers = [];
-  if (!spotOk()) blockers.push('Mark your spot on the map so we can find you.');
+  if (!pickup && tableClosed()) blockers.push('Table ordering is closed. Switch to pickup to schedule for tomorrow.');
+  else if (!pickup && !spotOk()) blockers.push('Mark your spot on the map so we can find you.');
   if (sold) blockers.push(`Remove ${sold.name} to continue.`);
-  const extrasOpen = state.name || state.notes;
+
+  const contact = pickup ? `
+    <div class="stack">
+      <div class="pdg-field ${state.nameError ? 'pdg-field--error' : ''}">
+        <label class="caption pdg-field__label" for="name">Name for pickup</label>
+        <input class="body pdg-input" id="name" autocomplete="given-name" maxlength="60" value="${esc(state.name)}" aria-describedby="nameHint" ${state.nameError ? 'aria-invalid="true"' : ''}>
+        <p class="caption pdg-field__hint" id="nameHint">${state.nameError ? 'Add a name so the team knows whose order it is.' : 'We call this out at the counter.'}</p>
+      </div>
+      <div class="pdg-field">
+        <label class="caption pdg-field__label" for="email">Email for your receipt (optional)</label>
+        <input class="body pdg-input" id="email" type="email" autocomplete="email" value="${esc(state.email)}" aria-describedby="emailHint">
+        <p class="caption pdg-field__hint" id="emailHint">Prototype: nothing is sent or stored.</p>
+      </div>
+      <details class="extras" ${state.notes ? 'open' : ''}>
+        <summary class="caption">Add a pickup note</summary>
+        <div class="pdg-field"><label class="caption pdg-field__label" for="notes">Note</label>
+          <textarea class="body pdg-input" id="notes" maxlength="200" aria-describedby="notesHint">${esc(state.notes)}</textarea>
+          <p class="caption pdg-field__hint" id="notesHint">Anything that helps with collection. Please talk to the team about allergies.</p></div>
+      </details>
+    </div>` : `
+    <details class="extras" ${state.name || state.notes ? 'open' : ''}>
+      <summary class="caption">Add a name or note</summary>
+      <div class="stack">
+        <div class="pdg-field"><label class="caption pdg-field__label" for="name">Name</label>
+          <input class="body pdg-input" id="name" autocomplete="given-name" maxlength="60" value="${esc(state.name)}" aria-describedby="nameHint">
+          <p class="caption pdg-field__hint" id="nameHint">Helps Victoria find you on a busy table.</p></div>
+        <div class="pdg-field"><label class="caption pdg-field__label" for="notes">Notes</label>
+          <textarea class="body pdg-input" id="notes" maxlength="200" aria-describedby="notesHint">${esc(state.notes)}</textarea>
+          <p class="caption pdg-field__hint" id="notesHint">Allergies, extra cutlery, anything else.</p></div>
+      </div>
+    </details>`;
+
+  const pay = joined()
+    ? `<div class="banner banner--info">${ICON.info}<p class="caption">This goes on <strong>${SAM.name}'s bill</strong>. You'll pay together at the counter before you leave.</p></div>`
+    : `<fieldset class="paychips">
+        <legend class="caption">Payment</legend>
+        <label class="caption paychip"><input type="radio" name="pay" value="now" ${state.pay === 'now' ? 'checked' : ''}>Pay now</label>
+        <label class="caption paychip"><input type="radio" name="pay" value="later" ${state.pay === 'later' ? 'checked' : ''}>${pickup ? 'Pay at pickup' : 'At the counter later'}</label>
+      </fieldset>`;
+
+  const cta = pickup ? (state.pay === 'later' ? 'Place pickup order' : 'Pay and place pickup order')
+    : joined() || state.pay === 'later' ? 'Place order' : 'Pay and place order';
 
   return `
   <div class="card">
@@ -617,82 +710,83 @@ function viewSummary(){
         ${state.portraits[l.key] ? `<img class="thumb" src="${state.portraits[l.key]}" alt="Your cocoa portrait">` : `<span class="thumb" aria-hidden="true">${l.milk ? l.milk.emoji : l.emoji}</span>`}
         <div class="line__text">
           <span class="body" style="font-weight:600">${l.name}</span>
-          ${l.milk ? `<button class="small milk-chip" data-action="pickMilk" data-id="${l.id}" data-line="${l.key}" aria-label="Change milk, currently ${l.milk.full}">${l.milk.emoji} ${l.milk.full}${l.milk.extra ? ` +${money(l.milk.extra)}` : ''}</button>` : ''}
+          ${l.milk ? `<button class="small opt-chip" data-action="pickMilk" data-id="${l.id}" data-line="${l.key}" aria-label="Change milk or size, currently ${optsLabel(l)}">${l.milk.emoji} ${optsLabel(l)}</button>` : ''}
           ${l.id === state.soldNow ? badge('error', 'alert', 'Sold out') : ''}
           ${l.foam && l.id !== state.soldNow ? `<button class="small linkbtn" data-action="portrait" data-line="${l.key}">${state.portraits[l.key] ? 'Change cocoa portrait' : '+ Cocoa portrait'}</button>` : ''}
         </div>
         <div class="line__right">
           <span class="caption">${money(l.qty * l.unit)}</span>
-          ${l.id === state.soldNow ? `<button class="small pdg-btn pdg-btn--secondary" style="min-height:32px" data-action="remove" data-line="${l.key}" data-key="remove-${l.key.replace('|','_')}">Remove</button>` : qtyControl(l.key, l.name, l.qty)}
+          ${l.id === state.soldNow ? `<button class="small pdg-btn pdg-btn--secondary" style="min-height:32px" data-action="remove" data-line="${l.key}">Remove</button>` : qtyControl(l.key, l.name, l.qty)}
         </div>
       </li>`).join('')}
     </ul>
-    <form data-form="order" novalidate style="display:flex;flex-direction:column;gap:var(--space-4)">
-      <details class="extras" ${extrasOpen ? 'open' : ''}>
-        <summary class="caption">Add a name or note</summary>
-        <div class="pdg-field">
-          <label class="caption pdg-field__label" for="name">Name</label>
-          <input class="body pdg-input" id="name" autocomplete="given-name" value="${esc(state.name)}" aria-describedby="nameHint">
-          <p class="caption pdg-field__hint" id="nameHint">Helps Victoria find you on a busy table.</p>
-        </div>
-        <div class="pdg-field">
-          <label class="caption pdg-field__label" for="notes">Notes</label>
-          <textarea class="body pdg-input" id="notes" aria-describedby="notesHint">${esc(state.notes)}</textarea>
-          <p class="caption pdg-field__hint" id="notesHint">Allergies, extra cutlery, anything else.</p>
-        </div>
-      </details>
-      ${joined() ? `<div class="banner banner--info">${ICON.info}<p class="caption">This goes on <strong>${SAM.name}'s bill</strong>. You'll pay together at the counter before you leave.</p></div>` : `
-      <fieldset class="paychips">
-        <legend class="caption">Payment</legend>
-        <label class="caption paychip"><input type="radio" name="pay" value="now" ${state.pay === 'now' ? 'checked' : ''}>Pay now</label>
-        <label class="caption paychip"><input type="radio" name="pay" value="later" ${state.pay === 'later' ? 'checked' : ''}>At the counter later</label>
-      </fieldset>`}
+    <form data-form="order" novalidate class="stack" style="gap:var(--space-4)">
+      ${contact}
+      ${pay}
       <div class="totals"><span class="caption muted">Total</span><span class="total">${money(cartTotal())}</span></div>
-      <button class="body pdg-btn pdg-btn--primary cta" type="submit" ${blockers.length ? 'disabled aria-describedby="blockers"' : ''}>${joined() || state.pay === 'later' ? 'Place order' : 'Pay and place order'}</button>
+      <button class="body pdg-btn pdg-btn--primary cta" type="submit" ${blockers.length ? 'disabled aria-describedby="blockers"' : ''}>${cta}</button>
       ${blockers.length ? `<p class="caption muted" id="blockers">${blockers.join(' ')}</p>` : ''}
     </form>
   </div>`;
 }
 
 function viewStatus(){
-  const o = state.order, i = o.status, done = i === TRACK.length - 1;
-  const w = wordsFor(o.spot.c, o.spot.r);
+  const o = state.order, track = TRACKS[o.mode], i = o.status, done = i === track.length - 1;
+  const where = o.mode === 'table' ? wordsFor(o.spot.c, o.spot.r) : o.slot;
+  const eta = Math.max(1, o.eta - i * 3);
+  const heading = done ? (o.mode === 'table' ? 'Enjoy!' : 'Your break is ready.') : track[i].title;
   return `
   <div class="card">
-    <div style="display:flex;flex-direction:column;gap:var(--space-2)">
-      <div>${done ? badge('success', 'check', 'Delivered') : badge('neutral', 'clock', 'In progress')}</div>
-      <h3 class="h2">${done ? 'Enjoy!' : TRACK[i].title}</h3>
-      <p class="caption muted">Order #${o.number} · ${TRACK[i].note}${done ? '' : ` About ${Math.max(1, o.eta - i * 3)} min.`}</p>
+    <div class="stack" style="gap:var(--space-2)">
+      <div>${done ? badge('success', 'check', o.mode === 'table' ? 'Delivered' : 'Ready') : badge('neutral', 'clock', 'In progress')}</div>
+      <h3 class="h2">${heading}</h3>
+      <p class="caption muted">${o.mode === 'table' ? 'To table' : 'Pickup'} · order #${o.number}${o.name ? ` for ${esc(o.name)}` : ''} · ${track[i].note}${done ? '' : ` About ${eta} min.`}</p>
     </div>
-    ${state.notice === 'moved' ? `<div class="banner banner--info" role="status">${ICON.info}<p class="caption">Got it. Victoria will bring it to <strong>${w}</strong>.</p></div>` : ''}
+    ${state.notice === 'moved' ? `<div class="banner banner--info" role="status">${ICON.info}<p class="caption">Got it. Victoria will bring it to <strong>${where}</strong>.</p></div>` : ''}
     ${state.notice === 'buddyFallback' ? `<div class="banner banner--info" role="status">${ICON.info}<p class="caption">This browser can't float the buddy above other windows, so it's staying on this page and updating the tab title instead. Chrome and Edge can pop it out.</p></div>` : ''}
-    <ol class="track" aria-label="Order status">${TRACK.map((s, n) => {
+    <ol class="track" aria-label="Order status">${track.map((s, n) => {
       const cls = n < i || done ? 'done' : n === i ? 'now' : 'later';
       return `<li class="${cls}"><span class="track__dot">${cls === 'done' ? ICON.check : ''}</span>
         <span><strong class="caption">${s.title}</strong> <span class="small muted">${cls === 'done' ? 'Done' : cls === 'now' ? 'Now' : ''}</span></span></li>`;
     }).join('')}</ol>
+    <div class="to caption">${o.mode === 'table' ? ICON.pin : ICON.bag}<span>${o.mode === 'table' ? `To <strong>${where}</strong>` : `Collect from the counter · <strong>${esc(where)}</strong>`}</span></div>
     <button class="body pdg-btn pdg-btn--primary cta" data-action="popBuddy">${pip ? 'Buddy is popped out' : 'Pop out coffee buddy'}</button>
     <ul class="lines">${o.items.map(l => `
       <li class="line">
         ${o.portraits[l.key] ? `<img class="thumb" src="${o.portraits[l.key]}" alt="Your cocoa portrait">` : `<span class="thumb" aria-hidden="true">${l.milk ? l.milk.emoji : l.emoji}</span>`}
         <div class="line__text"><span class="body">${l.qty}× ${l.name}</span>
-          ${l.milk ? `<span class="small muted">${l.milk.full}</span>` : ''}
+          ${l.milk ? `<span class="small muted">${optsLabel(l)}</span>` : ''}
           ${o.portraits[l.key] ? `<span class="small muted">${i === 0 ? 'Cocoa portrait queued' : i === 1 ? 'Dusting your portrait…' : 'Cocoa portrait done'}</span>` : ''}</div>
         <span class="caption">${money(l.qty * l.unit)}</span>
       </li>`).join('')}
     </ul>
-    <div class="totals"><span class="caption muted">${o.joined ? `On ${SAM.name}'s bill` : o.pay === 'now' ? 'Paid' : 'Pay at the counter'} · ${w}</span><span class="total">${money(o.total)}</span></div>
-    <div style="display:flex;gap:var(--space-2);flex-wrap:wrap">
-      ${done ? '' : `<button class="caption pdg-btn pdg-btn--secondary" data-action="move">I moved</button>`}
-      <button class="caption pdg-btn pdg-btn--secondary" data-action="again">${done ? 'Order another round' : 'Start another order'}</button>
-    </div>
+    <div class="totals"><span class="caption muted">${o.joined ? `On ${SAM.name}'s bill` : o.pay === 'now' ? 'Paid' : o.mode === 'pickup' ? 'Pay at pickup' : 'Pay at the counter'}</span><span class="total">${money(o.total)}</span></div>
+    ${state.confirmCancel ? `
+      <div class="banner banner--warning" role="alert">${ICON.alert}<p class="caption"><strong>Cancel this order?</strong> We haven't started it yet. Your items go back into your order.</p></div>
+      <div style="display:flex;gap:var(--space-2);flex-wrap:wrap">
+        <button class="caption pdg-btn pdg-btn--destructive" data-action="cancelOrder">Cancel order #${o.number}</button>
+        <button class="caption pdg-btn pdg-btn--secondary" data-action="keepOrder">Keep order</button>
+      </div>` : `
+      <div style="display:flex;gap:var(--space-2);flex-wrap:wrap">
+        ${o.mode === 'table' && !done ? `<button class="caption pdg-btn pdg-btn--secondary" data-action="move">I moved</button>` : ''}
+        ${o.mode === 'pickup' && i === 0 ? `<button class="caption pdg-btn pdg-btn--secondary" data-action="askCancel">Cancel order</button>` : ''}
+        <button class="caption pdg-btn pdg-btn--secondary" data-action="again">${done ? 'Order another round' : 'Start another order'}</button>
+      </div>`}
   </div>`;
 }
 
-// ---------- Milk picker ----------
+function renderMobileBar(){
+  const show = !state.order && cartCount() > 0;
+  document.body.classList.toggle('has-bar', show);
+  $('#mobilebar').innerHTML = show ? `
+    <span class="body"><strong>${cartCount()} item${cartCount() === 1 ? '' : 's'}</strong> · ${money(cartTotal())}</span>
+    <button class="body pdg-btn pdg-btn--primary" data-action="toSide">View order</button>` : '';
+}
+
+// ---------- Milk & size picker ----------
 // Swap milks with the arrows, the option buttons, ←/→ keys or a swipe. Each swap pours a little milk into the cup.
-let milkFor = null;   // {id, line} — line is set when changing the milk on an existing order line
-let milkIdx = 0;
+let milkFor = null;   // {id, line} — line is set when changing the options on an existing order line
+let milkIdx = 0, milkSize = 'regular';
 
 function cupSvg(base){
   return `<svg viewBox="0 0 120 120" aria-hidden="true">
@@ -701,7 +795,7 @@ function cupSvg(base){
     <clipPath id="cupClip"><path d="M21 33h78l-7.6 68a7 7 0 01-7 6H35.6a7 7 0 01-7-6z"/></clipPath>
     <g clip-path="url(#cupClip)">
       <rect x="0" y="80" width="120" height="40" fill="${base}"/>
-      <rect class="milk-layer" id="milkLayer" x="0" y="44" width="120" height="38" style="fill:var(--milk)"/>
+      <rect class="milk-layer" x="0" y="44" width="120" height="38" style="fill:var(--milk)"/>
       <path d="M0 44q15-6 30 0t30 0 30 0 30 0v4H0z" style="fill:var(--milk)" class="milk-layer"/>
     </g>
   </svg>`;
@@ -709,19 +803,20 @@ function cupSvg(base){
 
 function openMilk(id, line){
   milkFor = {id, line:line || null};
-  const current = line ? line.split('|')[1] : 'cow';
-  milkIdx = Math.max(0, MILKS.findIndex(m => m.id === current));
+  const [, curMilk, curSize] = line ? line.split('|') : [, 'cow', 'regular'];
+  milkIdx = Math.max(0, MILKS.findIndex(m => m.id === curMilk));
+  milkSize = curSize === 'large' ? 'large' : 'regular';
   const it = ITEMS[id];
   $('#milkBody').innerHTML = `
     <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:var(--space-3)">
-      <div><h2 class="h3" id="milkTitle">Pick your milk</h2><p class="caption muted">${it.name}</p></div>
+      <div><h2 class="h3" id="milkTitle">Make it yours</h2><p class="caption muted">${it.name}</p></div>
       <button class="caption pdg-btn pdg-btn--ghost" data-action="closeMilk">Close</button>
     </div>
     <div class="milk-stage" id="milkStage">
       <button class="pdg-btn pdg-btn--secondary milk-arrow" data-action="milkPrev" aria-label="Previous milk">${ICON.left}</button>
       <div class="milk-scene" id="milkScene">
         <div class="milk-buddy"><div class="milk-buddy__face" id="milkFace"></div><div class="milk-pour"></div></div>
-        <div class="milk-cup">${cupSvg(it.base || '#5A3825')}</div>
+        <div class="milk-cup" id="milkCup">${cupSvg(it.base || '#5A3825')}</div>
       </div>
       <button class="pdg-btn pdg-btn--secondary milk-arrow" data-action="milkNext" aria-label="Next milk">${ICON.right}</button>
     </div>
@@ -729,6 +824,14 @@ function openMilk(id, line){
     <div class="milk-opts" role="radiogroup" aria-label="Milk">
       ${MILKS.map((m, n) => `<button class="small milk-opt" role="radio" data-action="milkSet" data-idx="${n}" aria-checked="false"><span aria-hidden="true">${m.emoji}</span>${m.name}</button>`).join('')}
     </div>
+    <div class="size-row">
+      <span class="caption" style="font-weight:600">Size</span>
+      <div class="pdg-segmented" role="group" aria-label="Size">
+        <button class="caption pdg-segmented__opt" data-action="sizeSet" data-size="regular" aria-pressed="false">Regular</button>
+        <button class="caption pdg-segmented__opt" data-action="sizeSet" data-size="large" aria-pressed="false">Large +${money(LARGE_EXTRA)}</button>
+      </div>
+    </div>
+    ${it.allergens ? `<p class="small muted">${ICON.info} ${it.allergens}</p>` : ''}
     <button class="body pdg-btn pdg-btn--primary cta" data-action="milkConfirm" id="milkConfirm"></button>`;
   paintMilk(0);
   $('#milk').showModal();
@@ -737,13 +840,16 @@ function openMilk(id, line){
 
 function paintMilk(dir){
   const m = MILKS[milkIdx], it = ITEMS[milkFor.id];
-  const stage = $('#milkStage'), scene = $('#milkScene');
-  stage.style.setProperty('--milk-bg', m.bg);
+  const scene = $('#milkScene');
+  $('#milkStage').style.setProperty('--milk-bg', m.bg);
   scene.style.setProperty('--milk', m.color);
   $('#milkFace').textContent = m.emoji;
+  $('#milkCup').classList.toggle('is-large', milkSize === 'large');
   $('#milkName').innerHTML = `<p class="h3">${m.full}</p><p class="caption muted">${m.note}</p><p class="caption" style="font-weight:600">${m.extra ? `+${money(m.extra)}` : 'Included'}</p>`;
   document.querySelectorAll('.milk-opt').forEach((b, n) => { b.setAttribute('aria-checked', n === milkIdx); b.tabIndex = n === milkIdx ? 0 : -1; });
-  $('#milkConfirm').textContent = `${milkFor.line ? 'Update' : 'Add'} ${m.name.toLowerCase()} ${it.name.toLowerCase()} · ${money(it.price + m.extra)}`;
+  document.querySelectorAll('[data-action="sizeSet"]').forEach(b => b.setAttribute('aria-pressed', b.dataset.size === milkSize));
+  const price = it.price + m.extra + (milkSize === 'large' ? LARGE_EXTRA : 0);
+  $('#milkConfirm').textContent = `${milkFor.line ? 'Update' : 'Add'} ${milkSize === 'large' ? 'large ' : ''}${m.name.toLowerCase()} ${it.name.toLowerCase()} · ${money(price)}`;
   if (dir){ // replay the swap animation
     scene.classList.remove('in-left', 'in-right', 'pouring');
     void scene.offsetWidth;
@@ -758,9 +864,9 @@ function swapMilk(to){
 }
 
 function confirmMilk(){
-  const key = keyOf(milkFor.id, MILKS[milkIdx].id);
+  const key = keyOf(milkFor.id, MILKS[milkIdx].id, milkSize);
   if (milkFor.line && milkFor.line !== key){
-    // Move the whole line (and its portrait) to the new milk, merging with any line that already has it
+    // Move the whole line (and its portrait) to the new options, merging with any matching line
     addLine(key, state.cart[milkFor.line]);
     if (state.portraits[milkFor.line] && !state.portraits[key]) state.portraits[key] = state.portraits[milkFor.line];
     delete state.cart[milkFor.line]; delete state.portraits[milkFor.line];
@@ -827,15 +933,19 @@ function buddySvg(stage){
   </svg>`;
 }
 
+// The buddy's mood: sleepy when received, busy while made, walking while carried to a table, happy at the end
+const buddyStage = o => o.status === TRACKS[o.mode].length - 1 ? 3 : o.status;
+
 function buddyHtml(inPip){
-  const o = state.order, i = o.status;
-  const msg = TRACK[i].buddy.replace('{n}', o.number).replace('{eta}', Math.max(1, o.eta - i * 3)).replace('{spot}', wordsFor(o.spot.c, o.spot.r));
-  const mood = i === 1 ? 'buddy--busy' : i === 2 ? 'buddy--walk' : '';
+  const o = state.order, t = TRACKS[o.mode][o.status], stage = buddyStage(o);
+  const where = o.mode === 'table' ? wordsFor(o.spot.c, o.spot.r) : 'the counter';
+  const msg = t.buddy.replace('{n}', o.number).replace('{eta}', Math.max(1, o.eta - o.status * 3)).replace('{where}', where).replace('{name}', esc(o.name || 'friend'));
+  const mood = stage === 1 ? 'buddy--busy' : stage === 2 ? 'buddy--walk' : '';
   return `<div class="buddy ${inPip ? 'buddy--pip' : ''} ${mood}" role="status" aria-live="polite">
     ${inPip ? '' : '<div style="position:relative">'}
-    ${buddySvg(i)}
+    ${buddySvg(stage)}
     ${inPip ? '' : `<button class="buddy__x" data-action="hideBuddy" aria-label="Hide coffee buddy">×</button></div>`}
-    <div class="buddy__bubble"><b>Order #${o.number} · ${TRACK[i].title}</b>${msg}
+    <div class="buddy__bubble"><b>Order #${o.number} · ${t.title}</b>${msg}
       ${inPip ? '' : `<br><button class="buddy__pop" data-action="popBuddy">${'documentPictureInPicture' in window ? 'Pop out above other tabs' : 'Keep me on this page'}</button>`}
     </div>
   </div>`;
@@ -844,8 +954,8 @@ function buddyHtml(inPip){
 function renderBuddy(){
   const dock = $('#buddyDock');
   const o = state.order;
-  if (!o){ dock.hidden = true; document.title = 'Corgi Cafe · Order to your spot'; if (pip) pip.close(); return; }
-  document.title = `${['🧾','☕','🚶','✅'][o.status]} ${TRACK[o.status].title} · #${o.number}`;
+  if (!o){ dock.hidden = true; document.title = 'Corgi Cafe · Order'; if (pip) pip.close(); return; }
+  document.title = `${['🧾','☕','🚶','✅'][buddyStage(o)]} ${TRACKS[o.mode][o.status].title} · #${o.number}`;
   dock.hidden = !!pip || state.buddyHidden;
   if (!dock.hidden) dock.innerHTML = buddyHtml(false);
   if (pip) pip.document.body.innerHTML = buddyHtml(true);
@@ -977,6 +1087,15 @@ function closeCocoa(){ stopCam(); $('#cocoa').close(); }
 $('#cocoa').addEventListener('close', stopCam);
 
 // ---------- Actions ----------
+function setMode(mode){
+  if (mode === state.mode) return;
+  state.mode = mode;
+  state.notice = ''; state.nameError = false;
+  if (mode === 'pickup' && scenario.closed && state.slot === 'asap') state.slot = SLOTS_TOMORROW[0];
+  history.replaceState(null, '', `?mode=${mode}`);
+  render();
+}
+
 function setSpot(s){
   state.spot = s;
   state.spotError = '';
@@ -986,23 +1105,30 @@ function setSpot(s){
 }
 
 function placeOrder(){
+  const pickup = state.mode === 'pickup';
+  if (pickup && !state.name.trim()){ state.nameError = true; render(); $('#name').focus(); return; }
   if (scenario.soldOutOnSubmit && !state.soldNow){
     const first = cartLines()[0];
     if (first){ state.soldNow = first.id; render(); return; }
   }
   const items = cartLines();
+  const kitchen = items.some(l => l.kitchen);
   state.order = {
-    number: String(400 + Math.floor(Math.random() * 99)),
-    spot: {...state.spot},
+    mode: state.mode,
+    number: String(pickup ? 1000 + Math.floor(Math.random() * 99) : 400 + Math.floor(Math.random() * 99)),
+    spot: pickup ? null : {...state.spot},
+    slot: pickup ? slotLabel() : null,
+    name: state.name.trim(),
     joined: joined(),
     pay: state.pay,
     items,
+    cart: {...state.cart},
     portraits: {...state.portraits},
     total: cartTotal(),
-    eta: items.some(l => l.kitchen) ? 12 : 8,
+    eta: (pickup ? 12 : kitchen ? 12 : 8) + (scenario.busy ? 10 : 0),
     status: 0
   };
-  state.cart = {}; state.portraits = {}; state.soldNow = null; state.notice = ''; state.buddyHidden = false;
+  state.cart = {}; state.portraits = {}; state.soldNow = null; state.notice = ''; state.buddyHidden = false; state.nameError = false;
   startTimer();
   render();
   $('#side').scrollIntoView({behavior:'smooth', block:'start'});
@@ -1010,8 +1136,10 @@ function placeOrder(){
 
 function advance(){
   if (!state.order) return;
-  state.order.status = Math.min(TRACK.length - 1, state.order.status + 1);
-  if (state.order.status === TRACK.length - 1) clearInterval(timer);
+  const last = TRACKS[state.order.mode].length - 1;
+  state.order.status = Math.min(last, state.order.status + 1);
+  state.confirmCancel = false;
+  if (state.order.status === last) clearInterval(timer);
   if (state.notice === 'moved') state.notice = '';
   render();
 }
@@ -1019,8 +1147,8 @@ function startTimer(){ clearInterval(timer); timer = setInterval(advance, STEP_M
 
 function newOrder(addId){
   clearInterval(timer);
-  const spot = state.order ? state.order.spot : state.spot;
-  state = {...fresh(), spot, filter:state.filter};
+  const keep = {mode:state.mode, spot:state.order && state.order.spot ? state.order.spot : state.spot, slot:state.slot, filter:state.filter, name:state.name};
+  state = {...fresh(), ...keep};
   render();
   if (addId){ if (ITEMS[addId].milk) openMilk(addId); else { addLine(keyOf(addId)); render(); } }
 }
@@ -1038,16 +1166,20 @@ document.addEventListener('click', e => {
   const el = e.target.closest('[data-action]');
   if (!el) return;
   const a = el.dataset.action, id = el.dataset.id, line = el.dataset.line;
+  if (a === 'mode') setMode(el.dataset.mode);
+  if (a === 'toMode') $('#modeLabel').scrollIntoView({behavior:'smooth', block:'start'});
+  if (a === 'slot'){ state.slot = el.dataset.slot; render(); }
   if (a === 'filter'){ state.filter = el.dataset.cat; render(); }
   if (a === 'inc'){ addLine(line); render(); }
   if (a === 'dec'){ state.cart[line] = Math.max(0, (state.cart[line] || 0) - 1); if (!state.cart[line]){ delete state.cart[line]; delete state.portraits[line]; } render(); }
   if (a === 'remove'){ delete state.cart[line]; delete state.portraits[line]; render(); }
   if (a === 'toSide') $('#side').scrollIntoView({behavior:'smooth', block:'start'});
-  // Milk picker
+  // Milk & size picker
   if (a === 'pickMilk') openMilk(id, line);
   if (a === 'milkPrev') swapMilk(milkIdx - 1);
   if (a === 'milkNext') swapMilk(milkIdx + 1);
   if (a === 'milkSet') swapMilk(+el.dataset.idx);
+  if (a === 'sizeSet'){ milkSize = el.dataset.size; paintMilk(0); }
   if (a === 'milkConfirm') confirmMilk();
   if (a === 'closeMilk') $('#milk').close();
   // Cocoa portrait
@@ -1057,27 +1189,37 @@ document.addEventListener('click', e => {
   if (a === 'usePortrait'){ state.portraits[cocoaFor] = captured; closeCocoa(); render(); }
   if (a === 'removePortrait'){ delete state.portraits[cocoaFor]; closeCocoa(); render(); }
   if (a === 'closeCocoa') closeCocoa();
-  // Location and order
+  // Location
   if (a === 'copySpot'){
-    const s = state.order && !state.moving ? state.order.spot : state.spot;
+    const s = state.order && state.order.mode === 'table' && !state.moving ? state.order.spot : state.spot;
     navigator.clipboard?.writeText(wordsFor(s.c, s.r)).then(() => { el.textContent = 'Copied'; setTimeout(() => { el.textContent = 'Copy spot'; }, 1500); });
   }
   if (a === 'help'){ state.notice = 'help'; render(); }
-  if (a === 'move'){ state.moving = true; state.spot = null; state.notice = ''; render(); $('#map').scrollIntoView({behavior:'smooth', block:'center'}); $('#map').focus({preventScroll:true}); }
+  // Order status
+  if (a === 'move'){ state.mode = 'table'; state.moving = true; state.spot = null; state.notice = ''; render(); $('#map').scrollIntoView({behavior:'smooth', block:'center'}); $('#map').focus({preventScroll:true}); }
   if (a === 'cancelMove'){ state.moving = false; state.spot = state.order.spot; render(); }
   if (a === 'confirmMove'){ state.order.spot = {...state.spot}; state.moving = false; state.notice = 'moved'; render(); }
+  if (a === 'askCancel'){ state.confirmCancel = true; render(); }
+  if (a === 'keepOrder'){ state.confirmCancel = false; render(); }
+  if (a === 'cancelOrder'){
+    clearInterval(timer);
+    const back = state.order;
+    state.order = null; state.confirmCancel = false;
+    state.cart = back.cart; state.portraits = back.portraits;
+    render();
+  }
   if (a === 'again') newOrder(id);
   if (a === 'popBuddy') popBuddy();
   if (a === 'hideBuddy'){ state.buddyHidden = true; render(); }
   // Prototype controls
   if (a === 'advance') advance();
-  if (a === 'restart'){ clearInterval(timer); state = fresh(); render(); window.scrollTo({top:0}); }
-  if (a === 'qr'){ clearInterval(timer); state = fresh(); setSpot({c:14, r:7}); }
+  if (a === 'restart'){ clearInterval(timer); state = fresh(); try { localStorage.removeItem(STORE); } catch {} render(); window.scrollTo({top:0}); }
+  if (a === 'qr'){ clearInterval(timer); state = {...fresh(), cart:state.cart, mode:'table'}; setSpot({c:14, r:7}); }
 });
 
 document.addEventListener('keydown', e => {
-  // ←/→ swap milks anywhere in the milk picker
-  if ($('#milk').open && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')){
+  // ←/→ swap milks anywhere in the picker
+  if ($('#milk').open && (e.key === 'ArrowLeft' || e.key === 'ArrowRight') && !e.target.closest('.pdg-segmented')){
     e.preventDefault();
     swapMilk(milkIdx + (e.key === 'ArrowRight' ? 1 : -1));
     $(`.milk-opt[data-idx="${milkIdx}"]`).focus();
@@ -1097,7 +1239,13 @@ document.addEventListener('change', e => {
   const el = e.target;
   if (el.name === 'join'){ state.join = el.value; render(); }
   if (el.name === 'pay'){ state.pay = el.value; render(); }
-  if (el.dataset.scenario){ scenario[el.dataset.scenario] = el.checked; if (el.dataset.scenario === 'soldOutOnSubmit') state.soldNow = null; render(); }
+  if (el.dataset.scenario){
+    scenario[el.dataset.scenario] = el.checked;
+    if (el.dataset.scenario === 'soldOutOnSubmit') state.soldNow = null;
+    // Closed: only tomorrow's windows exist; reopening drops a tomorrow-only choice
+    if (el.dataset.scenario === 'closed') state.slot = el.checked ? SLOTS_TOMORROW[0] : (SLOTS_TODAY.includes(state.slot) ? state.slot : 'asap');
+    render();
+  }
   if (el.dataset.actionFile === 'upload' && el.files[0]){
     stopCam();
     const img = new Image();
@@ -1107,7 +1255,8 @@ document.addEventListener('change', e => {
 });
 
 document.addEventListener('input', e => {
-  if (e.target.id === 'name') state.name = e.target.value;
+  if (e.target.id === 'name'){ state.name = e.target.value; if (state.nameError && state.name.trim()){ state.nameError = false; } }
+  if (e.target.id === 'email') state.email = e.target.value;
   if (e.target.id === 'notes') state.notes = e.target.value;
 });
 
@@ -1129,9 +1278,12 @@ document.addEventListener('submit', e => {
   if (form === 'order') placeOrder();
 });
 
-// Deep link from the sticker on a table: ?spot=three.word.name
-const deep = SPOT_BY_WORDS.get((new URLSearchParams(location.search).get('spot') || '').toLowerCase());
-if (deep && !spotProblem(deep)) state.spot = deep;
+// Start: saved bag first, then the URL — ?mode=pickup|table, or ?spot=three.word.name from a table sticker
+load();
+const params = new URLSearchParams(location.search);
+if (params.get('mode') === 'pickup' || params.get('mode') === 'table') state.mode = params.get('mode');
+const deep = SPOT_BY_WORDS.get((params.get('spot') || '').toLowerCase());
+if (deep && !spotProblem(deep)){ state.spot = deep; state.mode = 'table'; }
 render();
 </script>
 </body>
